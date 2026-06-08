@@ -7273,8 +7273,20 @@ Data-driven validation is measuring a model’s ability to reproduce empirical s
 </section>
 <section id="models" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Models</h1>
-<p>Model 2: Belief and Preference Formation Model 3: Option Generation Model 4: Election Setup Model 5: Voting Model 6: Election</p>
-<p>Survey Results</p>
+<p>Model 2: Belief and Preference Formation<br>
+Model 3: Option Generation<br>
+Model 4: Election Setup<br>
+Model 5: Voting<br>
+Model 6: Election</p>
+<p>Flow:</p>
+<ol type="1">
+<li><p>Model 3 and Model 4 are set at the beginning. The options are the lists in candidates of the political parties. We do not model the process of list generation, but we take it as given and take it from data. The election setup is making ballots from the list of candidates this can vary when we test alternative voting systems.</p></li>
+<li><p>We use census data (1) and the survey data (2) to initialize the agents in Model 2. We provide different ways how survey data goes into the initialization. The goal is to not use it excessively and maybe more in the form of extracted mental models using long term party preferences. The idea would be to have the distribution of preferences emerging from belief and preference formation (Model 2).</p></li>
+<li><p>Model 2 is then run for a number of time steps. The agents may perceive news articles (4) as stimuli and update their beliefs and preferences. The also share their beliefs and preferences with other agents. The survey data (2) is used to validate the belief and preference formation model.</p></li>
+<li><p>Model 5 is a one shot voting model which takes the preferences of the agents and the election setup and in particular the Kandidattest answers of candidates as input and produces the votes (or abstentions) for all agents based on their preferences. So, in the current voting systems the model produces for each voter either abstention of a candidate of a party to be put on the ballot. The survey data (2) together with the Kandidattest answers are used to validate the voting model. They can also be used as the input data, while in a full counter factual scenario study we would not use them but rather use the output of the belief and preference formation model.</p></li>
+<li><p>Model 6 is the aggregation of votes into election results. The election results of simulated elections are then validated against the real election results (5 and 6).</p></li>
+</ol>
+<p><span class="text-red"><strong>Below only notes</strong></span></p>
 <section id="model-2" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="model-2"><span class="header-section-number">4.1</span> Model 2</h2>
 <div class="cell" data-layout-align="default">
@@ -7449,7 +7461,7 @@ Lorenz, Jan. 2021. <span>“Data-Driven Agent-Based Modeling in Computational So
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/janlorenz\.github\.io\/EuropeanCitySquare\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
