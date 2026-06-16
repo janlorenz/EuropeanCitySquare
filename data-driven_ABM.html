@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Model Outline – European City Squared</title>
+<title>Data-driven agent-based modeling – European City Squared</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -22,41 +22,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -124,9 +89,6 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
-<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
-<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
-<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="styles.css">
@@ -150,7 +112,7 @@ div.csl-indent {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Outline</span></a>
   </li>  
   <li class="nav-item">
@@ -158,7 +120,7 @@ div.csl-indent {
 <span class="menu-text">Survey Results</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./data-driven_ABM.html"> 
+    <a class="nav-link active" href="./data-driven_ABM.html" aria-current="page"> 
 <span class="menu-text">Data-drive ABM</span></a>
   </li>  
 </ul>
@@ -177,14 +139,10 @@ div.csl-indent {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#goal" id="toc-goal" class="nav-link active" data-scroll-target="#goal"><span class="header-section-number">1</span> Goal</a></li>
-  <li><a href="#data-driven-agent-based-modeling" id="toc-data-driven-agent-based-modeling" class="nav-link" data-scroll-target="#data-driven-agent-based-modeling"><span class="header-section-number">2</span> Data-driven agent-based modeling</a></li>
-  <li><a href="#data-sources" id="toc-data-sources" class="nav-link" data-scroll-target="#data-sources"><span class="header-section-number">3</span> Data Sources</a></li>
-  <li><a href="#models" id="toc-models" class="nav-link" data-scroll-target="#models"><span class="header-section-number">4</span> Models</a>
-  <ul class="collapse">
-  <li><a href="#model-2" id="toc-model-2" class="nav-link" data-scroll-target="#model-2"><span class="header-section-number">4.1</span> Model 2</a></li>
-  <li><a href="#pilot-study" id="toc-pilot-study" class="nav-link" data-scroll-target="#pilot-study"><span class="header-section-number">4.2</span> Pilot Study</a></li>
-  </ul></li>
+  <li><a href="#initialization" id="toc-initialization" class="nav-link active" data-scroll-target="#initialization"><span class="header-section-number">1</span> Initialization</a></li>
+  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis"><span class="header-section-number">2</span> Exploratory Data Analysis</a></li>
+  <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation"><span class="header-section-number">3</span> Validation</a></li>
+  <li><a href="#calibration" id="toc-calibration" class="nav-link" data-scroll-target="#calibration"><span class="header-section-number">4</span> Calibration</a></li>
   </ul>
 </nav>
     </div>
@@ -193,7 +151,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Model Outline</h1>
+<h1 class="title">Data-driven agent-based modeling</h1>
 </div>
 
 
@@ -210,132 +168,35 @@ div.csl-indent {
 </header>
 
 
-<section id="goal" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Goal</h1>
-<p>We build a stack of models that simulate the process of preference formation and an election in the electorate of the population of <strong>Aarhus</strong>. Once for the municipal election and once for the national election.</p>
-<p>First, we will focus on the <strong>municipal election</strong>.</p>
-</section>
-<section id="data-driven-agent-based-modeling" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Data-driven agent-based modeling</h1>
-<p>The modeling process is <strong>data-driven</strong> <span class="citation" data-cites="Lorenz2021DatadrivenAgentbasedModeling">(<a href="#ref-Lorenz2021DatadrivenAgentbasedModeling" role="doc-biblioref">Lorenz 2021</a>)</span>. That means, empirical data is used for <a href="./data-driven_ABM.html#exploratory-data-analysis">exploratory data analysis</a> and <a href="./data-driven_ABM.html#initialization">initialization</a>, <a href="./data-driven_ABM.html#calibration">calibration</a>, and <a href="./data-driven_ABM.html#validation">validation</a> of the model. Details about the data-driven modeling process can be found in the <a href="./data-driven_ABM.html">data-driven ABM part</a>.</p>
-</section>
-<section id="data-sources" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Data Sources</h1>
-<ol type="1">
-<li><strong>Census</strong>: Census data for the population of Aarhus</li>
-<li><strong>Survey</strong>:Survey responses about beliefs, preference on national and local issues, and voting behavior in the last election.</li>
-<li><strong>Candidates</strong>:Kandidattest answers for all participating candidate in the last municipal election in Aarhus.</li>
-<li><strong>Corpus</strong>: A corpus of local news articles from the last year in Aarhus tagged for the local topics in the survey.</li>
-<li><strong>Municipal Results</strong>: Election results from the last municipal election in Aarhus.</li>
-<li><strong>National Results</strong>: Election results from the last national election in Aarhus.</li>
-</ol>
-</section>
-<section id="models" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Models</h1>
-<p>Model 2: Belief and Preference Formation<br>
-Model 3: Option Generation<br>
-Model 4: Election Setup<br>
-Model 5: Voting<br>
-Model 6: Election</p>
-<p>Flow:</p>
-<ol type="1">
-<li><p>Model 3 and Model 4 are set at the beginning. The options are the lists in candidates of the political parties. We do not model the process of list generation, but we take it as given and take it from data. The election setup is making ballots from the list of candidates this can vary when we test alternative voting systems.</p></li>
-<li><p>We use census data (1) and the survey data (2) to initialize the agents in Model 2. We provide different ways how survey data goes into the initialization. The goal is to not use it excessively and maybe more in the form of extracted mental models using long term party preferences. The idea would be to have the distribution of preferences emerging from belief and preference formation (Model 2).</p></li>
-<li><p>Model 2 is then run for a number of time steps. The agents may perceive news articles (4) as stimuli and update their beliefs and preferences. The also share their beliefs and preferences with other agents. The survey data (2) is used to validate the belief and preference formation model.</p></li>
-<li><p>Model 5 is a one shot voting model which takes the preferences of the agents and the election setup and in particular the Kandidattest answers of candidates as input and produces the votes (or abstentions) for all agents based on their preferences. So, in the current voting systems the model produces for each voter either abstention of a candidate of a party to be put on the ballot. The survey data (2) together with the Kandidattest answers are used to validate the voting model. They can also be used as the input data, while in a full counter factual scenario study we would not use them but rather use the output of the belief and preference formation model.</p></li>
-<li><p>Model 6 is the aggregation of votes into election results. The election results of simulated elections are then validated against the real election results (5 and 6).</p></li>
-</ol>
-<p><span class="text-red"><strong>Below only notes</strong></span></p>
-<section id="model-2" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="model-2"><span class="header-section-number">4.1</span> Model 2</h2>
-<div class="cell" data-layout-align="default">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>sequenceDiagram</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    participant Configurator</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    participant Polis</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    actor Agent</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    actor AgentPeer as Agents (peers)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    rect rgb(255, 245, 200)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    Note over Configurator, AgentPeer: Phase 1 - Initialise agent states and simulation environment</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    Configurator-&gt;&gt;Polis: initialize news</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    Configurator-&gt;&gt;Agent: initialize preferences</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    end</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    rect rgb(250, 245, 200)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    Note over Configurator, AgentPeer: Phase 2 - Per-timestep preference update</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    loop each simulation step (day)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    Note over Polis, Agent: Broadcasting preferences</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    loop each agent</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        Polis-&gt;&gt;Polis: broadcast(news)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        Agent-&gt;&gt;Agent: broadcast(preference)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    end</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    Note over Polis, AgentPeer: Perceive and update preferences</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    loop each agent</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        Agent-&gt;&gt;Polis: perceive(news)</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        Agent-&gt;&gt;AgentPeer: perceive(peers)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        Agent-&gt;&gt;Agent: updatePreferences()</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    end</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    end</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    end</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">sequenceDiagram
-    participant Configurator
-    participant Polis
-    actor Agent
-    actor AgentPeer as Agents (peers)
-    rect rgb(255, 245, 200)
-    Note over Configurator, AgentPeer: Phase 1 - Initialise agent states and simulation environment
-    Configurator-&gt;&gt;Polis: initialize news
-    Configurator-&gt;&gt;Agent: initialize preferences
-    end
-
-    rect rgb(250, 245, 200)
-    Note over Configurator, AgentPeer: Phase 2 - Per-timestep preference update
-    loop each simulation step (day)
-    Note over Polis, Agent: Broadcasting preferences
-    loop each agent
-        Polis-&gt;&gt;Polis: broadcast(news)
-        Agent-&gt;&gt;Agent: broadcast(preference)
-    end
-    Note over Polis, AgentPeer: Perceive and update preferences
-    loop each agent
-        Agent-&gt;&gt;Polis: perceive(news)
-        Agent-&gt;&gt;AgentPeer: perceive(peers)
-        Agent-&gt;&gt;Agent: updatePreferences()
-    end
-    end
-    end
-</pre>
+<p>The following steps are how data is used in the process of building and validating an agent-based model following <span class="citation" data-cites="Lorenz2021DatadrivenAgentbasedModeling">Lorenz (<a href="#ref-Lorenz2021DatadrivenAgentbasedModeling" role="doc-biblioref">2021</a>)</span>. <a href="#fig-data-driven-ABM" class="quarto-xref">Figure&nbsp;1</a> gives an overview of the process.</p>
+<div id="fig-data-driven-ABM" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-data-driven-ABM-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/Data-driven ABM Chapter Figs.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
-<p></p></figure><p></p>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-data-driven-ABM-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Data-driven agent-based modeling <span class="citation" data-cites="Lorenz2021DatadrivenAgentbasedModeling">(<a href="#ref-Lorenz2021DatadrivenAgentbasedModeling" role="doc-biblioref">Lorenz 2021</a>)</span>.
+</figcaption>
+</figure>
 </div>
-</div>
-</div>
+<section id="initialization" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="initialization"><span class="header-section-number">1</span> Initialization</h2>
+<p>Setting up the foundational state of the model. The simulation environment is created and the initial values of its parameters are set. The agents are created and the initial states for their static and/or dynamic variables are set. Doing it data-driven means in the first place that the variables are analog to variables which are observable in the real world. This enables validation and calibration with empirical data. Data-driven initialization can also mean more specifically that the initial values of the variables are set based on empirical data. While this can be a starting point for a realistic simulation run, it goes againt the goal of having the model be able to reproduce the distribution of the variables as an emergent property of the model.</p>
 </section>
-<section id="pilot-study" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="pilot-study"><span class="header-section-number">4.2</span> Pilot Study</h2>
-<ol type="1">
-<li>Aarhus Municipality abstract lab game theoretic experiment resource allocation game with different voting systems.</li>
-</ol>
-<p>4 Voting Rules</p>
-<ul>
-<li>First past the post</li>
-<li>Ranked Voting (with instant runoff)</li>
-<li>Quadratic Voting</li>
-<li>Majority required on plurality</li>
-</ul>
-<ol start="2" type="1">
-<li>Experiment</li>
-</ol>
+<section id="exploratory-data-analysis" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="exploratory-data-analysis"><span class="header-section-number">2</span> Exploratory Data Analysis</h2>
+<p>Exploration of empirical data to understand the distribution of the variables and their relationships, and to identify stylized facts that the model should be able to reproduce. Done by visualizing, calculating standard summary statistics, and defining relevant targeted metrics.</p>
+</section>
+<section id="validation" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="validation"><span class="header-section-number">3</span> Validation</h2>
+<p>Data-driven validation is measuring a model’s ability to reproduce empirical stylized facts. This is also called <em>assessing the replicative validity</em>. Methods and metric can be similar as for macro-calibration (see below) but with a different focus. While calibration is model-internal parameter-tuning process to make it match data better, validation is a model-external assessment about its quality.</p>
+</section>
+<section id="calibration" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="calibration"><span class="header-section-number">4</span> Calibration</h2>
+<p>Adjusting free parameters and simulation procedures such the the model matches its real-world subject better. Data-driven <em>micro-calibration</em> means that parameters and simulation procedures have realisitic microlevel foundations. Data-driven phenomenological <em>macro-calibration</em> means that parameters and simulation procedures are adjusted to match the stylized facts as quantifies be macrolevel metrics. While the former is imporant for counter-factual scenario studies, the latter is important for building forecasting models. Ideally, both do not lead to strong deviations but are consistent with each other.</p>
 
 
 
-</section>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
