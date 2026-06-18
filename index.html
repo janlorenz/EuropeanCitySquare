@@ -179,11 +179,12 @@ div.csl-indent {
   <ul>
   <li><a href="#goal" id="toc-goal" class="nav-link active" data-scroll-target="#goal"><span class="header-section-number">1</span> Goal</a></li>
   <li><a href="#data-driven-agent-based-modeling" id="toc-data-driven-agent-based-modeling" class="nav-link" data-scroll-target="#data-driven-agent-based-modeling"><span class="header-section-number">2</span> Data-driven agent-based modeling</a></li>
-  <li><a href="#data-sources" id="toc-data-sources" class="nav-link" data-scroll-target="#data-sources"><span class="header-section-number">3</span> Data Sources</a></li>
-  <li><a href="#models" id="toc-models" class="nav-link" data-scroll-target="#models"><span class="header-section-number">4</span> Models</a>
+  <li><a href="#models" id="toc-models" class="nav-link" data-scroll-target="#models"><span class="header-section-number">3</span> Models</a></li>
+  <li><a href="#data-sources" id="toc-data-sources" class="nav-link" data-scroll-target="#data-sources"><span class="header-section-number">4</span> Data Sources</a></li>
+  <li><a href="#model-overview" id="toc-model-overview" class="nav-link" data-scroll-target="#model-overview"><span class="header-section-number">5</span> Model Overview</a>
   <ul class="collapse">
-  <li><a href="#model-2" id="toc-model-2" class="nav-link" data-scroll-target="#model-2"><span class="header-section-number">4.1</span> Model 2</a></li>
-  <li><a href="#pilot-study" id="toc-pilot-study" class="nav-link" data-scroll-target="#pilot-study"><span class="header-section-number">4.2</span> Pilot Study</a></li>
+  <li><a href="#model-preference-formation" id="toc-model-preference-formation" class="nav-link" data-scroll-target="#model-preference-formation"><span class="header-section-number">5.1</span> Model: Preference Formation</a></li>
+  <li><a href="#pilot-study" id="toc-pilot-study" class="nav-link" data-scroll-target="#pilot-study"><span class="header-section-number">5.2</span> Pilot Study</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -219,24 +220,461 @@ div.csl-indent {
 <h1 data-number="2"><span class="header-section-number">2</span> Data-driven agent-based modeling</h1>
 <p>The modeling process is <strong>data-driven</strong> <span class="citation" data-cites="Lorenz2021DatadrivenAgentbasedModeling">(<a href="#ref-Lorenz2021DatadrivenAgentbasedModeling" role="doc-biblioref">Lorenz 2021</a>)</span>. That means, empirical data is used for <a href="./data-driven_ABM.html#exploratory-data-analysis">exploratory data analysis</a> and <a href="./data-driven_ABM.html#initialization">initialization</a>, <a href="./data-driven_ABM.html#calibration">calibration</a>, and <a href="./data-driven_ABM.html#validation">validation</a> of the model. Details about the data-driven modeling process can be found in the <a href="./data-driven_ABM.html">data-driven ABM part</a>.</p>
 </section>
-<section id="data-sources" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Data Sources</h1>
-<ol type="1">
+<section id="models" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Models</h1>
+<p>As specifiec in the proposal and the Specification Document D04.1, we have a stack of 6 models that are connected to each other as shown in the <a href="#fig-modelplan" class="quarto-xref">Figure&nbsp;1</a>. Here we specify this chain of models further with the goal to implent the first prototype. To that end, we also give an overview of the data sources used for initialization and validation.</p>
+<div id="fig-modelplan" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-modelplan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="figs/SubmodelsProposal.png" class="img-fluid figure-img"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="figs/SubmodelsSpecs.png" class="img-fluid figure-img"></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-modelplan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Modeling plan from the proposal (left) and the Specification Document D04.1 (right).
+</figcaption>
+</figure>
+</div>
+<p>We focus on the following models in the first prototype in the following form:</p>
+<p>Model 2: <strong>Preference Formation</strong> (how agents form their preferences ) Model 3: Candidates and Parties (set up exogenously from data)<br>
+Model 4: Election Setup (set up as the orignal voting system in Aarhus and then alternative voting systems)<br>
+Model 5: <strong>Voting</strong><br>
+Model 6: Election (aggregation of votes into results)</p>
+</section>
+<section id="data-sources" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Data Sources</h1>
+<p>These are the data sources we use for initialization and validation of the models. Additionally, some data sources are also used as input data in model execution.</p>
+<ul>
 <li><strong>Census</strong>: Census data for the population of Aarhus</li>
 <li><strong>Survey</strong>:Survey responses about beliefs, preference on national and local issues, and voting behavior in the last election.</li>
 <li><strong>Candidates</strong>:Kandidattest answers for all participating candidate in the last municipal election in Aarhus.</li>
 <li><strong>Corpus</strong>: A corpus of local news articles from the last year in Aarhus tagged for the local topics in the survey.</li>
-<li><strong>Municipal Results</strong>: Election results from the last municipal election in Aarhus.</li>
-<li><strong>National Results</strong>: Election results from the last national election in Aarhus.</li>
-</ol>
+<li><strong>Election results</strong>: Results from the last municipal election in Aarhus. Results from the last national election in Aarhus.</li>
+</ul>
 </section>
-<section id="models" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Models</h1>
-<p>Model 2: Belief and Preference Formation<br>
-Model 3: Option Generation<br>
-Model 4: Election Setup<br>
-Model 5: Voting<br>
-Model 6: Election</p>
+<section id="model-overview" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Model Overview</h1>
+<div class="cell" data-fig-height="3" data-layout-align="default">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode dot code-with-copy"><code class="sourceCode dot"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">digraph</span> <span class="va">G</span> <span class="ot">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">layout</span><span class="ot">=</span><span class="va">neato</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">overlap</span><span class="ot">=</span><span class="va">false</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">splines</span><span class="ot">=</span><span class="va">true</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="kw">node</span><span class="co"> </span><span class="ot">[</span><span class="at">fontname</span><span class="ot">=</span><span class="st">"Source Sans Pro"</span><span class="co">, </span><span class="at">fontsize</span><span class="ot">=</span><span class="dv">14</span><span class="ot">]</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="kw">edge</span><span class="co"> </span><span class="ot">[</span><span class="at">fontname</span><span class="ot">=</span><span class="st">"Source Sans Pro"</span><span class="co">, </span><span class="at">fontsize</span><span class="ot">=</span><span class="dv">11</span><span class="ot">]</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">  // Empirical data type</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="kw">subgraph</span><span class="co"> </span><span class="va">cluster_empirical</span><span class="co"> </span><span class="ot">{</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="at">label</span><span class="ot">=</span><span class="st">"Empirical Data"</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="at">color</span><span class="ot">=</span><span class="va">transparent</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="kw">node</span><span class="co"> </span><span class="ot">[</span><span class="at">shape</span><span class="ot">=</span><span class="va">note</span><span class="co">, </span><span class="at">style</span><span class="ot">=</span><span class="va">filled</span><span class="co">, </span><span class="at">fillcolor</span><span class="ot">=</span><span class="st">"#c1cffc"</span><span class="co">, </span><span class="at">color</span><span class="ot">=</span><span class="st">"#3246f9"</span><span class="ot">]</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">census</span><span class="co">    </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Aarhus\nCensus"</span><span class="co">,        </span><span class="va">pos</span><span class="ot">=</span><span class="st">"0,4!"</span><span class="ot">]</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">survey</span><span class="co">    </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Aarhus\nSurvey"</span><span class="co">,        </span><span class="va">pos</span><span class="ot">=</span><span class="st">"4.75,4!"</span><span class="ot">]</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">news</span><span class="co">      </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"News Corpus"</span><span class="co">,           </span><span class="va">pos</span><span class="ot">=</span><span class="st">"2,4!"</span><span class="ot">]</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">candidate</span><span class="co"> </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Candidate\nProfiles\n(Model 3)"</span><span class="co">, </span><span class="va">pos</span><span class="ot">=</span><span class="st">"7.5,4!"</span><span class="ot">]</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">votSys</span><span class="co">    </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Voting System\n(Model 4)"</span><span class="co">, </span><span class="at">shape</span><span class="ot">=</span><span class="va">box</span><span class="co">,</span><span class="at">peripheries</span><span class="ot">=</span><span class="dv">2</span><span class="co">, </span><span class="va">pos</span><span class="ot">=</span><span class="st">"9.6,4!"</span><span class="ot">]</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">results</span><span class="co">   </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Election Results"</span><span class="co">,      </span><span class="va">pos</span><span class="ot">=</span><span class="st">"12.5,4!"</span><span class="ot">]</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="ot">}</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">  // Algorithms type</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="kw">subgraph</span><span class="co"> </span><span class="va">cluster_algorithms</span><span class="co"> </span><span class="ot">{</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="at">label</span><span class="ot">=</span><span class="st">"Algorithms"</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="at">color</span><span class="ot">=</span><span class="va">transparent</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="kw">node</span><span class="co"> </span><span class="ot">[</span><span class="at">shape</span><span class="ot">=</span><span class="va">box</span><span class="co">, </span><span class="at">style</span><span class="ot">=</span><span class="va">filled</span><span class="co">, </span><span class="at">fillcolor</span><span class="ot">=</span><span class="st">"#edb9fb"</span><span class="co">, </span><span class="at">color</span><span class="ot">=</span><span class="st">"#952bb3"</span><span class="ot">]</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">init1</span><span class="co">   </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Initialization 1"</span><span class="co">, </span><span class="at">peripheries</span><span class="ot">=</span><span class="dv">2</span><span class="co">, </span><span class="va">pos</span><span class="ot">=</span><span class="st">"0,2!"</span><span class="ot">]</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">init2</span><span class="co">   </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Initialization 2"</span><span class="co">, </span><span class="at">peripheries</span><span class="ot">=</span><span class="dv">2</span><span class="co">, </span><span class="va">pos</span><span class="ot">=</span><span class="st">"5.7,2!"</span><span class="ot">]</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="ot">}</span><span class="co">  </span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co">  </span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="kw">subgraph</span><span class="co"> </span><span class="va">cluster_validationFunctions</span><span class="co"> </span><span class="ot">{</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="at">label</span><span class="ot">=</span><span class="st">"Algorithms"</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="at">color</span><span class="ot">=</span><span class="va">transparent</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="kw">node</span><span class="co"> </span><span class="ot">[</span><span class="at">shape</span><span class="ot">=</span><span class="va">box</span><span class="co">, </span><span class="at">style</span><span class="ot">=</span><span class="va">filled</span><span class="co">, </span><span class="at">fillcolor</span><span class="ot">=</span><span class="st">"#feb3d8"</span><span class="co">, </span><span class="at">color</span><span class="ot">=</span><span class="st">"#b21360"</span><span class="ot">]</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">valid1</span><span class="co">  </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Validation 1\n(Preferences)"</span><span class="co">, </span><span class="va">pos</span><span class="ot">=</span><span class="st">"3.8,2!"</span><span class="ot">]</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">valid2</span><span class="co">  </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Validation 2\n(Votes)"</span><span class="co">, </span><span class="va">pos</span><span class="ot">=</span><span class="st">"9.5,2!"</span><span class="ot">]</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">valid3</span><span class="co">  </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Validation 3\n(Results)"</span><span class="co">, </span><span class="va">pos</span><span class="ot">=</span><span class="st">"12.5,2!"</span><span class="ot">]</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="ot">}</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co">  // Models &amp; simulation type</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="kw">subgraph</span><span class="co"> </span><span class="va">cluster_simulation1</span><span class="co"> </span><span class="ot">{</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="at">label</span><span class="ot">=</span><span class="st">"Models"</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="at">color</span><span class="ot">=</span><span class="va">transparent</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="kw">node</span><span class="co"> </span><span class="ot">[</span><span class="at">shape</span><span class="ot">=</span><span class="va">cylinder</span><span class="co">, </span><span class="at">style</span><span class="ot">=</span><span class="va">filled</span><span class="co">, </span><span class="at">fillcolor</span><span class="ot">=</span><span class="st">"#abfce9"</span><span class="co">, </span><span class="at">color</span><span class="ot">=</span><span class="st">"#0fc8b0"</span><span class="ot">]</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">agents1</span><span class="co">   </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Agents for\nPreference\nFormation"</span><span class="co">, </span><span class="va">pos</span><span class="ot">=</span><span class="st">"0,0!"</span><span class="ot">]</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">prefModel</span><span class="co"> </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Preference\nFormation\n(Model 2)"</span><span class="co">, </span><span class="at">shape</span><span class="ot">=</span><span class="va">box</span><span class="co">, </span><span class="at">peripheries</span><span class="ot">=</span><span class="dv">2</span><span class="co">, </span><span class="va">pos</span><span class="ot">=</span><span class="st">"2,0!"</span><span class="ot">]</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">agents2</span><span class="co">   </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Agents for\nVoting"</span><span class="co">, </span><span class="va">pos</span><span class="ot">=</span><span class="st">"4,0!"</span><span class="ot">]</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="ot">}</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="co">  // Models &amp; simulation-data 2</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="kw">subgraph</span><span class="co"> </span><span class="va">cluster_simulation2</span><span class="co"> </span><span class="ot">{</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="at">label</span><span class="ot">=</span><span class="st">"Models"</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="at">color</span><span class="ot">=</span><span class="va">transparent</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="kw">node</span><span class="co"> </span><span class="ot">[</span><span class="at">shape</span><span class="ot">=</span><span class="va">cylinder</span><span class="co">, </span><span class="at">style</span><span class="ot">=</span><span class="va">filled</span><span class="co">, </span><span class="at">fillcolor</span><span class="ot">=</span><span class="st">"#b8ff92"</span><span class="co">, </span><span class="at">color</span><span class="ot">=</span><span class="st">"#47bb09"</span><span class="ot">]</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">agents3</span><span class="co">   </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Agents for\nVoting"</span><span class="co">, </span><span class="va">pos</span><span class="ot">=</span><span class="st">"5.5,0!"</span><span class="ot">]</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">voteModel</span><span class="co"> </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Voting\n(Model 5)"</span><span class="co">, </span><span class="at">shape</span><span class="ot">=</span><span class="va">box</span><span class="co">, </span><span class="at">peripheries</span><span class="ot">=</span><span class="dv">2</span><span class="co">, </span><span class="va">pos</span><span class="ot">=</span><span class="st">"7.5,0!"</span><span class="ot">]</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">agents4</span><span class="co">   </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Agents with\nBallots"</span><span class="co">, </span><span class="va">pos</span><span class="ot">=</span><span class="st">"9.5,0!"</span><span class="ot">]</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">election</span><span class="co">  </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Election\n(Model 6)"</span><span class="co">, </span><span class="at">shape</span><span class="ot">=</span><span class="va">box</span><span class="co">, </span><span class="at">peripheries</span><span class="ot">=</span><span class="dv">2</span><span class="co">, </span><span class="va">pos</span><span class="ot">=</span><span class="st">"11,0!"</span><span class="ot">]</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">resultsSim</span><span class="co"> </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Simulated\nResults"</span><span class="co">, </span><span class="va">pos</span><span class="ot">=</span><span class="st">"12.5,0!"</span><span class="ot">]</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="ot">}</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="co">  // edges</span></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">census</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">init1</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">census</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">init2</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">news</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">prefModel</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">survey</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">init1</span><span class="co"> </span><span class="ot">[</span><span class="at">style</span><span class="ot">=</span><span class="st">"dashed"</span><span class="ot">]</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">survey</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">init2</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">survey</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">valid1</span></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">survey</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">valid2</span><span class="co"> </span><span class="ot">[</span><span class="at">style</span><span class="ot">=</span><span class="st">"dashed"</span><span class="ot">]</span></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">candidate</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">prefModel</span><span class="co"> </span><span class="ot">[</span><span class="at">style</span><span class="ot">=</span><span class="st">"dashed"</span><span class="ot">]</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">candidate</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">voteModel</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">candidate</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">valid2</span></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">results</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">valid3</span></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">init1</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">agents1</span></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">valid1</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">agents2</span></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">init2</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">agents3</span></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">valid2</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">agents4</span></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">votSys</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">voteModel</span></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">votSys</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">election</span></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">valid3</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">resultsSim</span></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="co">  </span></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">agents1</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">prefModel</span></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">prefModel</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">agents2</span></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">agents2</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">agents3</span><span class="co"> </span><span class="ot">[</span><span class="at">style</span><span class="ot">=</span><span class="st">"dashed"</span><span class="ot">]</span></span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">agents3</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">voteModel</span></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">voteModel</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">agents4</span></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">agents4</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">election</span></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">election</span><span class="co"> </span><span class="ot">-&gt;</span><span class="co"> </span><span class="va">resultsSim</span></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="ot">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-model-overview" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-model-overview-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<svg width="672" height="288" viewbox="0.00 0.00 1014.70 365.35" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 361.35)">
+<title>G</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-361.35 1010.7,-361.35 1010.7,4 -4,4"></polygon>
+<!-- census -->
+<g id="node1" class="node">
+<title>census</title>
+<polygon fill="#c1cffc" stroke="#3246f9" points="75.47,-348.75 24.57,-348.75 24.57,-307.55 81.47,-307.55 81.47,-342.75 75.47,-348.75"></polygon>
+<polyline fill="none" stroke="#3246f9" points="75.47,-348.75 75.47,-342.75 "></polyline>
+<polyline fill="none" stroke="#3246f9" points="81.47,-342.75 75.47,-342.75 "></polyline>
+<text text-anchor="middle" x="53.02" y="-332.35" font-family="Source Sans Pro" font-size="14.00">Aarhus</text>
+<text text-anchor="middle" x="53.02" y="-315.55" font-family="Source Sans Pro" font-size="14.00">Census</text>
+</g>
+<!-- init1 -->
+<g id="node7" class="node">
+<title>init1</title>
+<polygon fill="#edb9fb" stroke="#952bb3" points="102.05,-202.15 3.99,-202.15 3.99,-166.15 102.05,-166.15 102.05,-202.15"></polygon>
+<polygon fill="none" stroke="#952bb3" points="106.05,-206.15 -0.02,-206.15 -0.02,-162.15 106.05,-162.15 106.05,-206.15"></polygon>
+<text text-anchor="middle" x="53.02" y="-179.95" font-family="Source Sans Pro" font-size="14.00">Initialization 1</text>
+</g>
+<!-- census&#45;&gt;init1 -->
+<g id="edge1" class="edge">
+<title>census-&gt;init1</title>
+<path fill="none" stroke="black" d="M53.02,-307.52C53.02,-283.66 53.02,-244.1 53.02,-216.22"></path>
+<polygon fill="black" stroke="black" points="56.52,-216.16 53.02,-206.16 49.52,-216.16 56.52,-216.16"></polygon>
+</g>
+<!-- init2 -->
+<g id="node8" class="node">
+<title>init2</title>
+<polygon fill="#edb9fb" stroke="#952bb3" points="512.45,-202.15 414.39,-202.15 414.39,-166.15 512.45,-166.15 512.45,-202.15"></polygon>
+<polygon fill="none" stroke="#952bb3" points="516.45,-206.15 410.38,-206.15 410.38,-162.15 516.45,-162.15 516.45,-206.15"></polygon>
+<text text-anchor="middle" x="463.42" y="-179.95" font-family="Source Sans Pro" font-size="14.00">Initialization 2</text>
+</g>
+<!-- census&#45;&gt;init2 -->
+<g id="edge2" class="edge">
+<title>census-&gt;init2</title>
+<path fill="none" stroke="black" d="M81.55,-318.14C147.23,-295.09 310.4,-237.84 400.74,-206.14"></path>
+<polygon fill="black" stroke="black" points="402.04,-209.4 410.31,-202.78 399.72,-202.79 402.04,-209.4"></polygon>
+</g>
+<!-- survey -->
+<g id="node2" class="node">
+<title>survey</title>
+<polygon fill="#c1cffc" stroke="#3246f9" points="417.45,-348.75 366.58,-348.75 366.58,-307.55 423.45,-307.55 423.45,-342.75 417.45,-348.75"></polygon>
+<polyline fill="none" stroke="#3246f9" points="417.45,-348.75 417.45,-342.75 "></polyline>
+<polyline fill="none" stroke="#3246f9" points="423.45,-342.75 417.45,-342.75 "></polyline>
+<text text-anchor="middle" x="395.02" y="-332.35" font-family="Source Sans Pro" font-size="14.00">Aarhus</text>
+<text text-anchor="middle" x="395.02" y="-315.55" font-family="Source Sans Pro" font-size="14.00">Survey</text>
+</g>
+<!-- survey&#45;&gt;init1 -->
+<g id="edge4" class="edge">
+<title>survey-&gt;init1</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M366.74,-316.24C311.79,-293.11 189.48,-241.61 114.84,-210.18"></path>
+<polygon fill="black" stroke="black" points="116.11,-206.92 105.54,-206.26 113.4,-213.37 116.11,-206.92"></polygon>
+</g>
+<!-- survey&#45;&gt;init2 -->
+<g id="edge5" class="edge">
+<title>survey-&gt;init2</title>
+<path fill="none" stroke="black" d="M404.82,-307.52C416.25,-283.45 435.27,-243.4 448.53,-215.48"></path>
+<polygon fill="black" stroke="black" points="451.83,-216.69 452.96,-206.16 445.51,-213.69 451.83,-216.69"></polygon>
+</g>
+<!-- valid1 -->
+<g id="node9" class="node">
+<title>valid1</title>
+<polygon fill="#feb3d8" stroke="#b21360" points="371.73,-204.75 281.5,-204.75 281.5,-163.55 371.73,-163.55 371.73,-204.75"></polygon>
+<text text-anchor="middle" x="326.62" y="-188.35" font-family="Source Sans Pro" font-size="14.00">Validation 1</text>
+<text text-anchor="middle" x="326.62" y="-171.55" font-family="Source Sans Pro" font-size="14.00">(Preferences)</text>
+</g>
+<!-- survey&#45;&gt;valid1 -->
+<g id="edge6" class="edge">
+<title>survey-&gt;valid1</title>
+<path fill="none" stroke="black" d="M385.22,-307.52C373.65,-283.17 354.32,-242.47 341.04,-214.52"></path>
+<polygon fill="black" stroke="black" points="344.07,-212.74 336.62,-205.21 337.75,-215.75 344.07,-212.74"></polygon>
+</g>
+<!-- valid2 -->
+<g id="node10" class="node">
+<title>valid2</title>
+<polygon fill="#feb3d8" stroke="#b21360" points="779.61,-204.75 694.42,-204.75 694.42,-163.55 779.61,-163.55 779.61,-204.75"></polygon>
+<text text-anchor="middle" x="737.02" y="-188.35" font-family="Source Sans Pro" font-size="14.00">Validation 2</text>
+<text text-anchor="middle" x="737.02" y="-171.55" font-family="Source Sans Pro" font-size="14.00">(Votes)</text>
+</g>
+<!-- survey&#45;&gt;valid2 -->
+<g id="edge7" class="edge">
+<title>survey-&gt;valid2</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M423.29,-316.24C480.65,-292.09 611.44,-237.02 684.74,-206.16"></path>
+<polygon fill="black" stroke="black" points="686.4,-209.26 694.26,-202.15 683.68,-202.81 686.4,-209.26"></polygon>
+</g>
+<!-- news -->
+<g id="node3" class="node">
+<title>news</title>
+<polygon fill="#c1cffc" stroke="#3246f9" points="236.85,-346.15 151.18,-346.15 151.18,-310.15 242.85,-310.15 242.85,-340.15 236.85,-346.15"></polygon>
+<polyline fill="none" stroke="#3246f9" points="236.85,-346.15 236.85,-340.15 "></polyline>
+<polyline fill="none" stroke="#3246f9" points="242.85,-340.15 236.85,-340.15 "></polyline>
+<text text-anchor="middle" x="197.02" y="-323.95" font-family="Source Sans Pro" font-size="14.00">News Corpus</text>
+</g>
+<!-- prefModel -->
+<g id="node13" class="node">
+<title>prefModel</title>
+<polygon fill="#abfce9" stroke="#0fc8b0" points="234.87,-69.53 159.17,-69.53 159.17,-10.77 234.87,-10.77 234.87,-69.53"></polygon>
+<polygon fill="none" stroke="#0fc8b0" points="238.86,-73.55 155.17,-73.55 155.17,-6.75 238.86,-6.75 238.86,-73.55"></polygon>
+<text text-anchor="middle" x="197.02" y="-52.75" font-family="Source Sans Pro" font-size="14.00">Preference</text>
+<text text-anchor="middle" x="197.02" y="-35.95" font-family="Source Sans Pro" font-size="14.00">Formation</text>
+<text text-anchor="middle" x="197.02" y="-19.15" font-family="Source Sans Pro" font-size="14.00">(Model 2)</text>
+</g>
+<!-- news&#45;&gt;prefModel -->
+<g id="edge3" class="edge">
+<title>news-&gt;prefModel</title>
+<path fill="none" stroke="black" d="M197.02,-310.13C197.02,-265.34 197.02,-147.92 197.02,-83.68"></path>
+<polygon fill="black" stroke="black" points="200.52,-83.47 197.02,-73.47 193.52,-83.47 200.52,-83.47"></polygon>
+</g>
+<!-- candidate -->
+<g id="node4" class="node">
+<title>candidate</title>
+<polygon fill="#c1cffc" stroke="#3246f9" points="623.27,-357.55 556.76,-357.55 556.76,-298.75 629.27,-298.75 629.27,-351.55 623.27,-357.55"></polygon>
+<polyline fill="none" stroke="#3246f9" points="623.27,-357.55 623.27,-351.55 "></polyline>
+<polyline fill="none" stroke="#3246f9" points="629.27,-351.55 623.27,-351.55 "></polyline>
+<text text-anchor="middle" x="593.02" y="-340.75" font-family="Source Sans Pro" font-size="14.00">Candidate</text>
+<text text-anchor="middle" x="593.02" y="-323.95" font-family="Source Sans Pro" font-size="14.00">Profiles</text>
+<text text-anchor="middle" x="593.02" y="-307.15" font-family="Source Sans Pro" font-size="14.00">(Model 3)</text>
+</g>
+<!-- candidate&#45;&gt;valid2 -->
+<g id="edge10" class="edge">
+<title>candidate-&gt;valid2</title>
+<path fill="none" stroke="black" d="M622.5,-298.66C647.86,-273.31 684.17,-237 709.07,-212.1"></path>
+<polygon fill="black" stroke="black" points="711.8,-214.31 716.4,-204.76 706.85,-209.36 711.8,-214.31"></polygon>
+</g>
+<!-- candidate&#45;&gt;prefModel -->
+<g id="edge8" class="edge">
+<title>candidate-&gt;prefModel</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M556.52,-307.98C518.05,-285.74 456.81,-247.47 411.2,-205.35 392.32,-187.91 394.02,-177.58 375.12,-160.15 336.05,-124.11 285.26,-90.99 247.92,-68.72"></path>
+<polygon fill="black" stroke="black" points="249.6,-65.65 239.21,-63.58 246.04,-71.68 249.6,-65.65"></polygon>
+</g>
+<!-- voteModel -->
+<g id="node16" class="node">
+<title>voteModel</title>
+<polygon fill="#b8ff92" stroke="#47bb09" points="629.37,-60.78 556.66,-60.78 556.66,-19.52 629.37,-19.52 629.37,-60.78"></polygon>
+<polygon fill="none" stroke="#47bb09" points="633.39,-64.75 552.64,-64.75 552.64,-15.55 633.39,-15.55 633.39,-64.75"></polygon>
+<text text-anchor="middle" x="593.02" y="-44.35" font-family="Source Sans Pro" font-size="14.00">Voting</text>
+<text text-anchor="middle" x="593.02" y="-27.55" font-family="Source Sans Pro" font-size="14.00">(Model 5)</text>
+</g>
+<!-- candidate&#45;&gt;voteModel -->
+<g id="edge9" class="edge">
+<title>candidate-&gt;voteModel</title>
+<path fill="none" stroke="black" d="M593.02,-298.68C593.02,-245.21 593.02,-132.46 593.02,-75.16"></path>
+<polygon fill="black" stroke="black" points="596.52,-74.81 593.02,-64.81 589.52,-74.81 596.52,-74.81"></polygon>
+</g>
+<!-- votSys -->
+<g id="node5" class="node">
+<title>votSys</title>
+<polygon fill="#c1cffc" stroke="#3246f9" points="793.85,-348.78 694.58,-348.78 694.58,-307.52 793.85,-307.52 793.85,-348.78"></polygon>
+<polygon fill="none" stroke="#3246f9" points="797.83,-352.75 690.6,-352.75 690.6,-303.55 797.83,-303.55 797.83,-352.75"></polygon>
+<text text-anchor="middle" x="744.22" y="-332.35" font-family="Source Sans Pro" font-size="14.00">Voting System</text>
+<text text-anchor="middle" x="744.22" y="-315.55" font-family="Source Sans Pro" font-size="14.00">(Model 4)</text>
+</g>
+<!-- votSys&#45;&gt;voteModel -->
+<g id="edge16" class="edge">
+<title>votSys-&gt;voteModel</title>
+<path fill="none" stroke="black" d="M731.19,-303.35C704.06,-251.67 641.46,-132.43 610.71,-73.86"></path>
+<polygon fill="black" stroke="black" points="613.81,-72.22 606.06,-65 607.61,-75.48 613.81,-72.22"></polygon>
+</g>
+<!-- election -->
+<g id="node18" class="node">
+<title>election</title>
+<polygon fill="#b8ff92" stroke="#47bb09" points="881.37,-60.78 808.66,-60.78 808.66,-19.52 881.37,-19.52 881.37,-60.78"></polygon>
+<polygon fill="none" stroke="#47bb09" points="885.39,-64.75 804.64,-64.75 804.64,-15.55 885.39,-15.55 885.39,-64.75"></polygon>
+<text text-anchor="middle" x="845.02" y="-44.35" font-family="Source Sans Pro" font-size="14.00">Election</text>
+<text text-anchor="middle" x="845.02" y="-27.55" font-family="Source Sans Pro" font-size="14.00">(Model 6)</text>
+</g>
+<!-- votSys&#45;&gt;election -->
+<g id="edge17" class="edge">
+<title>votSys-&gt;election</title>
+<path fill="none" stroke="black" d="M752.9,-303.35C770.91,-251.88 812.38,-133.41 832.96,-74.58"></path>
+<polygon fill="black" stroke="black" points="836.32,-75.59 836.32,-65 829.71,-73.28 836.32,-75.59"></polygon>
+</g>
+<!-- results -->
+<g id="node6" class="node">
+<title>results</title>
+<polygon fill="#c1cffc" stroke="#3246f9" points="1000.89,-346.15 899.14,-346.15 899.14,-310.15 1006.89,-310.15 1006.89,-340.15 1000.89,-346.15"></polygon>
+<polyline fill="none" stroke="#3246f9" points="1000.89,-346.15 1000.89,-340.15 "></polyline>
+<polyline fill="none" stroke="#3246f9" points="1006.89,-340.15 1000.89,-340.15 "></polyline>
+<text text-anchor="middle" x="953.02" y="-323.95" font-family="Source Sans Pro" font-size="14.00">Election Results</text>
+</g>
+<!-- valid3 -->
+<g id="node11" class="node">
+<title>valid3</title>
+<polygon fill="#feb3d8" stroke="#b21360" points="995.61,-204.75 910.42,-204.75 910.42,-163.55 995.61,-163.55 995.61,-204.75"></polygon>
+<text text-anchor="middle" x="953.02" y="-188.35" font-family="Source Sans Pro" font-size="14.00">Validation 3</text>
+<text text-anchor="middle" x="953.02" y="-171.55" font-family="Source Sans Pro" font-size="14.00">(Results)</text>
+</g>
+<!-- results&#45;&gt;valid3 -->
+<g id="edge11" class="edge">
+<title>results-&gt;valid3</title>
+<path fill="none" stroke="black" d="M953.02,-309.91C953.02,-286.16 953.02,-244.26 953.02,-215.39"></path>
+<polygon fill="black" stroke="black" points="956.52,-215.03 953.02,-205.03 949.52,-215.03 956.52,-215.03"></polygon>
+</g>
+<!-- agents1 -->
+<g id="node12" class="node">
+<title>agents1</title>
+<path fill="#abfce9" stroke="#0fc8b0" d="M90.86,-73.12C90.86,-77.17 73.9,-80.45 53.02,-80.45 32.14,-80.45 15.17,-77.17 15.17,-73.12 15.17,-73.12 15.17,-7.18 15.17,-7.18 15.17,-3.13 32.14,0.15 53.02,0.15 73.9,0.15 90.86,-3.13 90.86,-7.18 90.86,-7.18 90.86,-73.12 90.86,-73.12"></path>
+<path fill="none" stroke="#0fc8b0" d="M90.86,-73.12C90.86,-69.08 73.9,-65.8 53.02,-65.8 32.14,-65.8 15.17,-69.08 15.17,-73.12"></path>
+<text text-anchor="middle" x="53.02" y="-52.75" font-family="Source Sans Pro" font-size="14.00">Agents for</text>
+<text text-anchor="middle" x="53.02" y="-35.95" font-family="Source Sans Pro" font-size="14.00">Preference</text>
+<text text-anchor="middle" x="53.02" y="-19.15" font-family="Source Sans Pro" font-size="14.00">Formation</text>
+</g>
+<!-- init1&#45;&gt;agents1 -->
+<g id="edge12" class="edge">
+<title>init1-&gt;agents1</title>
+<path fill="none" stroke="black" d="M53.02,-161.97C53.02,-142.98 53.02,-114.94 53.02,-90.54"></path>
+<polygon fill="black" stroke="black" points="56.52,-90.34 53.02,-80.34 49.52,-90.34 56.52,-90.34"></polygon>
+</g>
+<!-- agents3 -->
+<g id="node15" class="node">
+<title>agents3</title>
+<path fill="#b8ff92" stroke="#47bb09" d="M487,-63.63C487,-66.51 469.98,-68.85 449.02,-68.85 428.05,-68.85 411.03,-66.51 411.03,-63.63 411.03,-63.63 411.03,-16.67 411.03,-16.67 411.03,-13.79 428.05,-11.45 449.02,-11.45 469.98,-11.45 487,-13.79 487,-16.67 487,-16.67 487,-63.63 487,-63.63"></path>
+<path fill="none" stroke="#47bb09" d="M487,-63.63C487,-60.75 469.98,-58.41 449.02,-58.41 428.05,-58.41 411.03,-60.75 411.03,-63.63"></path>
+<text text-anchor="middle" x="449.02" y="-44.35" font-family="Source Sans Pro" font-size="14.00">Agents for</text>
+<text text-anchor="middle" x="449.02" y="-27.55" font-family="Source Sans Pro" font-size="14.00">Voting</text>
+</g>
+<!-- init2&#45;&gt;agents3 -->
+<g id="edge14" class="edge">
+<title>init2-&gt;agents3</title>
+<path fill="none" stroke="black" d="M461.2,-161.97C458.99,-139.89 455.56,-105.55 452.9,-78.95"></path>
+<polygon fill="black" stroke="black" points="456.36,-78.42 451.88,-68.82 449.39,-79.12 456.36,-78.42"></polygon>
+</g>
+<!-- agents2 -->
+<g id="node14" class="node">
+<title>agents2</title>
+<path fill="#abfce9" stroke="#0fc8b0" d="M379,-63.63C379,-66.51 361.98,-68.85 341.02,-68.85 320.05,-68.85 303.03,-66.51 303.03,-63.63 303.03,-63.63 303.03,-16.67 303.03,-16.67 303.03,-13.79 320.05,-11.45 341.02,-11.45 361.98,-11.45 379,-13.79 379,-16.67 379,-16.67 379,-63.63 379,-63.63"></path>
+<path fill="none" stroke="#0fc8b0" d="M379,-63.63C379,-60.75 361.98,-58.41 341.02,-58.41 320.05,-58.41 303.03,-60.75 303.03,-63.63"></path>
+<text text-anchor="middle" x="341.02" y="-44.35" font-family="Source Sans Pro" font-size="14.00">Agents for</text>
+<text text-anchor="middle" x="341.02" y="-27.55" font-family="Source Sans Pro" font-size="14.00">Voting</text>
+</g>
+<!-- valid1&#45;&gt;agents2 -->
+<g id="edge13" class="edge">
+<title>valid1-&gt;agents2</title>
+<path fill="none" stroke="black" d="M328.68,-163.52C330.88,-141.52 334.41,-106.17 337.14,-78.94"></path>
+<polygon fill="black" stroke="black" points="340.62,-79.25 338.14,-68.95 333.66,-78.55 340.62,-79.25"></polygon>
+</g>
+<!-- agents4 -->
+<g id="node17" class="node">
+<title>agents4</title>
+<path fill="#b8ff92" stroke="#47bb09" d="M779.07,-63.63C779.07,-66.51 760.22,-68.85 737.02,-68.85 713.81,-68.85 694.96,-66.51 694.96,-63.63 694.96,-63.63 694.96,-16.67 694.96,-16.67 694.96,-13.79 713.81,-11.45 737.02,-11.45 760.22,-11.45 779.07,-13.79 779.07,-16.67 779.07,-16.67 779.07,-63.63 779.07,-63.63"></path>
+<path fill="none" stroke="#47bb09" d="M779.07,-63.63C779.07,-60.75 760.22,-58.41 737.02,-58.41 713.81,-58.41 694.96,-60.75 694.96,-63.63"></path>
+<text text-anchor="middle" x="737.02" y="-44.35" font-family="Source Sans Pro" font-size="14.00">Agents with</text>
+<text text-anchor="middle" x="737.02" y="-27.55" font-family="Source Sans Pro" font-size="14.00">Ballots</text>
+</g>
+<!-- valid2&#45;&gt;agents4 -->
+<g id="edge15" class="edge">
+<title>valid2-&gt;agents4</title>
+<path fill="none" stroke="black" d="M737.02,-163.52C737.02,-141.62 737.02,-106.49 737.02,-79.3"></path>
+<polygon fill="black" stroke="black" points="740.52,-78.95 737.02,-68.95 733.52,-78.95 740.52,-78.95"></polygon>
+</g>
+<!-- resultsSim -->
+<g id="node19" class="node">
+<title>resultsSim</title>
+<path fill="#b8ff92" stroke="#47bb09" d="M989.29,-63.63C989.29,-66.51 973.03,-68.85 953.02,-68.85 933,-68.85 916.74,-66.51 916.74,-63.63 916.74,-63.63 916.74,-16.67 916.74,-16.67 916.74,-13.79 933,-11.45 953.02,-11.45 973.03,-11.45 989.29,-13.79 989.29,-16.67 989.29,-16.67 989.29,-63.63 989.29,-63.63"></path>
+<path fill="none" stroke="#47bb09" d="M989.29,-63.63C989.29,-60.75 973.03,-58.41 953.02,-58.41 933,-58.41 916.74,-60.75 916.74,-63.63"></path>
+<text text-anchor="middle" x="953.02" y="-44.35" font-family="Source Sans Pro" font-size="14.00">Simulated</text>
+<text text-anchor="middle" x="953.02" y="-27.55" font-family="Source Sans Pro" font-size="14.00">Results</text>
+</g>
+<!-- valid3&#45;&gt;resultsSim -->
+<g id="edge18" class="edge">
+<title>valid3-&gt;resultsSim</title>
+<path fill="none" stroke="black" d="M953.02,-163.52C953.02,-141.62 953.02,-106.49 953.02,-79.3"></path>
+<polygon fill="black" stroke="black" points="956.52,-78.95 953.02,-68.95 949.52,-78.95 956.52,-78.95"></polygon>
+</g>
+<!-- agents1&#45;&gt;prefModel -->
+<g id="edge19" class="edge">
+<title>agents1-&gt;prefModel</title>
+<path fill="none" stroke="black" d="M91.23,-40.15C107.66,-40.15 127.14,-40.15 144.87,-40.15"></path>
+<polygon fill="black" stroke="black" points="145.08,-43.65 155.08,-40.15 145.08,-36.65 145.08,-43.65"></polygon>
+</g>
+<!-- prefModel&#45;&gt;agents2 -->
+<g id="edge20" class="edge">
+<title>prefModel-&gt;agents2</title>
+<path fill="none" stroke="black" d="M239.05,-40.15C255.99,-40.15 275.61,-40.15 293.09,-40.15"></path>
+<polygon fill="black" stroke="black" points="293.1,-43.65 303.1,-40.15 293.1,-36.65 293.1,-43.65"></polygon>
+</g>
+<!-- agents2&#45;&gt;agents3 -->
+<g id="edge21" class="edge">
+<title>agents2-&gt;agents3</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M378.79,-40.15C385.98,-40.15 393.6,-40.15 401.06,-40.15"></path>
+<polygon fill="black" stroke="black" points="401.08,-43.65 411.08,-40.15 401.08,-36.65 401.08,-43.65"></polygon>
+</g>
+<!-- agents3&#45;&gt;voteModel -->
+<g id="edge22" class="edge">
+<title>agents3-&gt;voteModel</title>
+<path fill="none" stroke="black" d="M486.85,-40.15C503.86,-40.15 524.17,-40.15 542.46,-40.15"></path>
+<polygon fill="black" stroke="black" points="542.66,-43.65 552.66,-40.15 542.66,-36.65 542.66,-43.65"></polygon>
+</g>
+<!-- voteModel&#45;&gt;agents4 -->
+<g id="edge23" class="edge">
+<title>voteModel-&gt;agents4</title>
+<path fill="none" stroke="black" d="M633.51,-40.15C649.36,-40.15 667.74,-40.15 684.57,-40.15"></path>
+<polygon fill="black" stroke="black" points="684.82,-43.65 694.82,-40.15 684.82,-36.65 684.82,-43.65"></polygon>
+</g>
+<!-- agents4&#45;&gt;election -->
+<g id="edge24" class="edge">
+<title>agents4-&gt;election</title>
+<path fill="none" stroke="black" d="M779.08,-40.15C784.07,-40.15 789.21,-40.15 794.31,-40.15"></path>
+<polygon fill="black" stroke="black" points="794.66,-43.65 804.66,-40.15 794.66,-36.65 794.66,-43.65"></polygon>
+</g>
+<!-- election&#45;&gt;resultsSim -->
+<g id="edge25" class="edge">
+<title>election-&gt;resultsSim</title>
+<path fill="none" stroke="black" d="M885.23,-40.15C892.16,-40.15 899.42,-40.15 906.5,-40.15"></path>
+<polygon fill="black" stroke="black" points="906.69,-43.65 916.69,-40.15 906.69,-36.65 906.69,-43.65"></polygon>
+</g>
+</g>
+</svg>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-model-overview-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Model Overview
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <p>Flow:</p>
 <ol type="1">
 <li><p>Model 3 and Model 4 are set at the beginning. The options are the lists in candidates of the political parties. We do not model the process of list generation, but we take it as given and take it from data. The election setup is making ballots from the list of candidates this can vary when we test alternative voting systems.</p></li>
@@ -246,38 +684,38 @@ Model 6: Election</p>
 <li><p>Model 6 is the aggregation of votes into election results. The election results of simulated elections are then validated against the real election results (5 and 6).</p></li>
 </ol>
 <p><span class="text-red"><strong>Below only notes</strong></span></p>
-<section id="model-2" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="model-2"><span class="header-section-number">4.1</span> Model 2</h2>
+<section id="model-preference-formation" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="model-preference-formation"><span class="header-section-number">5.1</span> Model: Preference Formation</h2>
 <div class="cell" data-layout-align="default">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>sequenceDiagram</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    participant Configurator</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    participant Polis</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    actor Agent</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    actor AgentPeer as Agents (peers)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    rect rgb(255, 245, 200)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    Note over Configurator, AgentPeer: Phase 1 - Initialise agent states and simulation environment</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    Configurator-&gt;&gt;Polis: initialize news</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    Configurator-&gt;&gt;Agent: initialize preferences</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    end</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    rect rgb(250, 245, 200)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    Note over Configurator, AgentPeer: Phase 2 - Per-timestep preference update</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    loop each simulation step (day)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    Note over Polis, Agent: Broadcasting preferences</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    loop each agent</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        Polis-&gt;&gt;Polis: broadcast(news)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        Agent-&gt;&gt;Agent: broadcast(preference)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    end</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    Note over Polis, AgentPeer: Perceive and update preferences</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    loop each agent</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        Agent-&gt;&gt;Polis: perceive(news)</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        Agent-&gt;&gt;AgentPeer: perceive(peers)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        Agent-&gt;&gt;Agent: updatePreferences()</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    end</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    end</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    end</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sequenceDiagram</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    participant Configurator</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    participant Polis</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    actor Agent</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    actor AgentPeer as Agents (peers)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    rect rgb(255, 245, 200)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    Note over Configurator, AgentPeer: Phase 1 - Initialise agent states and simulation environment</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    Configurator-&gt;&gt;Polis: initialize news</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    Configurator-&gt;&gt;Agent: initialize preferences</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    end</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    rect rgb(250, 245, 200)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    Note over Configurator, AgentPeer: Phase 2 - Per-timestep preference update</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    loop each simulation step (day)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    Note over Polis, Agent: Broadcasting preferences</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    loop each agent</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        Polis-&gt;&gt;Polis: broadcast(news)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        Agent-&gt;&gt;Agent: broadcast(preference)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    end</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    Note over Polis, AgentPeer: Perceive and update preferences</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    loop each agent</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        Agent-&gt;&gt;Polis: perceive(news)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        Agent-&gt;&gt;AgentPeer: perceive(peers)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        Agent-&gt;&gt;Agent: updatePreferences()</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    end</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    end</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    end</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -317,8 +755,8 @@ Model 6: Election</p>
 </div>
 </div>
 </section>
-<section id="pilot-study" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="pilot-study"><span class="header-section-number">4.2</span> Pilot Study</h2>
+<section id="pilot-study" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="pilot-study"><span class="header-section-number">5.2</span> Pilot Study</h2>
 <ol type="1">
 <li>Aarhus Municipality abstract lab game theoretic experiment resource allocation game with different voting systems.</li>
 </ol>
