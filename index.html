@@ -298,7 +298,7 @@ Model 6: Election (aggregation of votes into results)</p>
 <section id="model-overview" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Model Overview</h1>
 <p><a href="#fig-model-overview" class="quarto-xref">Figure&nbsp;2</a> gives the full outline the models and their connections to each other and to the data sources. The full model flow is shown in the bottom part (Greenish), the data sources in the top part (blue), and the algorithms for initialization (purple) and validation (magenta) in the middle part. The arrows show the flow of data and information between the different components.</p>
-<p>Nodes with the <em>note-shape</em> (with the dog-ear on the topright) represent <strong>raw empirical data sources</strong>. Nodes with the <em>box-shape</em> represent <strong>algorithms</strong> for initialization, validation, or simulation procedures, while <em>double-lined boxes</em> represent <strong>substantial multistep algorithms</strong> and single-line procedures represent mainly one <strong>function</strong> determining the validation or election outcome. Nodes with the <em>cylinder-shape</em> represent simulated data which by initialization or model procedures.</p>
+<p>Nodes with the <em>note-shape</em> (with the dog-ear on the topright) represent <strong>raw empirical data sources</strong>. Nodes with the <em>box-shape</em> represent <strong>algorithms</strong> for initialization, validation, or simulation procedures, while <em>double-lined boxes</em> represent <strong>substantial (multistep) algorithms</strong> and single-line procedures represent mainly one <strong>function</strong> determining the validation or election outcome computation. Nodes with the <em>cylinder-shape</em> represent simulated data which by initialization or model procedures. The validation nodes are rounded boxes. This represents that validation can be function determining the quality of the match between emprical and simulated data but may also be in part qualitatively done in the first place.</p>
 <div class="cell" data-fig-height="3" data-layout-align="default">
 <details class="code-fold">
 <summary>Code</summary>
@@ -334,7 +334,7 @@ Model 6: Election (aggregation of votes into results)</p>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="kw">subgraph</span><span class="co"> </span><span class="va">cluster_validationFunctions</span><span class="co"> </span><span class="ot">{</span></span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="at">label</span><span class="ot">=</span><span class="st">"Algorithms"</span></span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="at">color</span><span class="ot">=</span><span class="va">transparent</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="kw">node</span><span class="co"> </span><span class="ot">[</span><span class="at">shape</span><span class="ot">=</span><span class="va">box</span><span class="co">, </span><span class="at">style</span><span class="ot">=</span><span class="va">filled</span><span class="co">, </span><span class="at">fillcolor</span><span class="ot">=</span><span class="st">"#feb3d8"</span><span class="co">, </span><span class="at">color</span><span class="ot">=</span><span class="st">"#b21360"</span><span class="ot">]</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="kw">node</span><span class="co"> </span><span class="ot">[</span><span class="at">shape</span><span class="ot">=</span><span class="va">box</span><span class="co">, </span><span class="at">style</span><span class="ot">=</span><span class="st">"filled,rounded"</span><span class="co">, </span><span class="at">fillcolor</span><span class="ot">=</span><span class="st">"#feb3d8"</span><span class="co">, </span><span class="at">color</span><span class="ot">=</span><span class="st">"#b21360"</span><span class="ot">]</span></span>
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">valid1</span><span class="co">  </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Validation 1\n(Preferences)"</span><span class="co">, </span><span class="va">pos</span><span class="ot">=</span><span class="st">"3.8,2!"</span><span class="ot">]</span></span>
 <span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">valid2</span><span class="co">  </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Validation 2\n(Votes)"</span><span class="co">, </span><span class="va">pos</span><span class="ot">=</span><span class="st">"9.5,2!"</span><span class="ot">]</span></span>
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="va">valid3</span><span class="co">  </span><span class="ot">[</span><span class="at">label</span><span class="ot">=</span><span class="st">"Validation 3\n(Results)"</span><span class="co">, </span><span class="va">pos</span><span class="ot">=</span><span class="st">"12.5,2!"</span><span class="ot">]</span></span>
@@ -460,7 +460,7 @@ Model 6: Election (aggregation of votes into results)</p>
 <!-- valid1 -->
 <g id="node9" class="node">
 <title>valid1</title>
-<polygon fill="#feb3d8" stroke="#b21360" points="383.25,-212.5 281.7,-212.5 281.7,-165.7 383.25,-165.7 383.25,-212.5"></polygon>
+<path fill="#feb3d8" stroke="#b21360" d="M371.25,-212.5C371.25,-212.5 293.7,-212.5 293.7,-212.5 287.7,-212.5 281.7,-206.5 281.7,-200.5 281.7,-200.5 281.7,-177.7 281.7,-177.7 281.7,-171.7 287.7,-165.7 293.7,-165.7 293.7,-165.7 371.25,-165.7 371.25,-165.7 377.25,-165.7 383.25,-171.7 383.25,-177.7 383.25,-177.7 383.25,-200.5 383.25,-200.5 383.25,-206.5 377.25,-212.5 371.25,-212.5"></path>
 <text text-anchor="middle" x="332.47" y="-193.9" font-family="Source Sans Pro" font-size="16.00">Validation 1</text>
 <text text-anchor="middle" x="332.47" y="-174.7" font-family="Source Sans Pro" font-size="16.00">(Preferences)</text>
 </g>
@@ -473,7 +473,7 @@ Model 6: Election (aggregation of votes into results)</p>
 <!-- valid2 -->
 <g id="node10" class="node">
 <title>valid2</title>
-<polygon fill="#feb3d8" stroke="#b21360" points="790.42,-212.5 695.33,-212.5 695.33,-165.7 790.42,-165.7 790.42,-212.5"></polygon>
+<path fill="#feb3d8" stroke="#b21360" d="M778.42,-212.5C778.42,-212.5 707.33,-212.5 707.33,-212.5 701.33,-212.5 695.33,-206.5 695.33,-200.5 695.33,-200.5 695.33,-177.7 695.33,-177.7 695.33,-171.7 701.33,-165.7 707.33,-165.7 707.33,-165.7 778.42,-165.7 778.42,-165.7 784.42,-165.7 790.42,-171.7 790.42,-177.7 790.42,-177.7 790.42,-200.5 790.42,-200.5 790.42,-206.5 784.42,-212.5 778.42,-212.5"></path>
 <text text-anchor="middle" x="742.87" y="-193.9" font-family="Source Sans Pro" font-size="16.00">Validation 2</text>
 <text text-anchor="middle" x="742.87" y="-174.7" font-family="Source Sans Pro" font-size="16.00">(Votes)</text>
 </g>
@@ -583,7 +583,7 @@ Model 6: Election (aggregation of votes into results)</p>
 <!-- valid3 -->
 <g id="node11" class="node">
 <title>valid3</title>
-<polygon fill="#feb3d8" stroke="#b21360" points="1006.42,-212.5 911.33,-212.5 911.33,-165.7 1006.42,-165.7 1006.42,-212.5"></polygon>
+<path fill="#feb3d8" stroke="#b21360" d="M994.42,-212.5C994.42,-212.5 923.33,-212.5 923.33,-212.5 917.33,-212.5 911.33,-206.5 911.33,-200.5 911.33,-200.5 911.33,-177.7 911.33,-177.7 911.33,-171.7 917.33,-165.7 923.33,-165.7 923.33,-165.7 994.42,-165.7 994.42,-165.7 1000.42,-165.7 1006.42,-171.7 1006.42,-177.7 1006.42,-177.7 1006.42,-200.5 1006.42,-200.5 1006.42,-206.5 1000.42,-212.5 994.42,-212.5"></path>
 <text text-anchor="middle" x="958.87" y="-193.9" font-family="Source Sans Pro" font-size="16.00">Validation 3</text>
 <text text-anchor="middle" x="958.87" y="-174.7" font-family="Source Sans Pro" font-size="16.00">(Results)</text>
 </g>
