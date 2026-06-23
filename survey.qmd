@@ -1,0 +1,635 @@
+---
+title: "Survey Results"
+format:
+  html:
+    embed-resources: true
+---
+
+
+The survey was conducted in the population of Aarhus, Denmark, and includes questions about beliefs, belief certainties, and preferences on five national topics: security, economics, welfare, immigration, and climate change. On Aarhus local topics, it has the ten most relevant questions from the Voting Advice Application (Kandidattest) for the municipal election. 
+
+```{r}
+#| message: false
+library(tidyverse)
+library(ggstats)
+library(scales)
+library(gt)
+library(patchwork)
+library(partycoloR)
+library(glue)
+data <- read_csv("survey_responses_ENG_TRANS.csv")
+```
+
+# National Topics 
+
+On national topics there were one questions each about beliefs, belief certainties, and preferences on security, economics, welfare, immigration, and climate change
+
+## Belief, Certainty, Preference Questions
+
+```{r}
+#| label: tbl-belief-pref-questions
+#| tbl-cap: "Belief and preference questions on national topics"
+library(tidyverse)
+nat_domains_questions <- tibble(
+  Label = fct_inorder(c("NSEC", "NECN", "NWLF", "NIMG", "NCLM")),
+  Topic = fct_inorder(c(
+    "Security",
+    "Economics",
+    "Welfare",
+    "Immigration",
+    "Climate Change"
+  )),
+  Belief_q = c(
+    "Denmark currently faces serious security threats.",
+    "Economic inequality in Denmark is too high.",
+    "People in Denmark who need public support do not always receive enough help.",
+    "Immigrants in Denmark are not integrating well into society.",
+    "Climate change poses an urgent threat to Denmark."
+  ),
+  Preference_q = c(
+    "Denmark spends too much money on supporting Ukraine in the war against Russia.",
+    "The tax for the highest incomes must be raised",
+    "The transfer income for the poorest cash assistance recipients must be increased.",
+    "More foreign labor from countries outside Europe and North America must be opened up.",
+    "Nuclear power on Danish soil must be part of the energy supply in the long term."
+  )
+)
+nat_domains_questions |>
+  select(Label, Topic, Belief_q, Preference_q) |>
+  knitr::kable(
+    col.names = c("Label", "Topic", "Belief Question", "Preference Question")
+  )
+```
+
+Respondents assess their beliefs and preferences on a scale from 0 (*Strongly disagree*) to 10 (*Strongly agree*), 5 was labeled as *Neither agree nor disagree*.
+
+For all belief questions, respondents were additionally asked 
+
+> How certain are you about your response to the previous statement? 
+
+Respondents assess their certainty on a scale from 0 (*I could easily change my mind*) to 10 (*I am completely certain about my view.*).
+
+## Belief, Uncertainty, and Preference Distributions
+
+Insights: 
+
+- For all topics, beliefs are more skewed towards agreement than preferences.
+- Certainty about the beliefs is generally high. 
+- Preferences have the typical *pentamodal* distribution spanning all possible opinions with peaks at the two extremes in the middle and two off-central moderate opinions [see @GestefeldEtAl2022DecomposingAttitudeDistributions]. This maybe caused by some condensing around focal or socially emergent values. 
+- Taking standard deviation (SD) as a measure of polarization, beliefs preferences are most polarized with Climate Change most and Immigration preferences least polarized. Beliefs are generally less polarized (partly a consequence of the positive bias) with Economic belief being most and Security belief being least polarized. On uncertainty there is the least variation in Mean and SD over all five topics. 
+
+
+```{r}
+#| label: fig-belief-pref-distributions
+#| fig-cap: "Belief, certainty, and preference distributions for the five national topics. Questions in @tbl-belief-pref-questions."
+#| fig-height: 7
+data_nat_long <- data |>
+  pivot_longer(
+    c(ends_with("_B"), ends_with("_P"), ends_with("_BCRT")),
+    names_to = "Variable",
+    values_to = "Response"
+  ) |>
+  mutate(
+    Label = word(Variable, 1, sep = "_"),
+    Type = word(Variable, 2, sep = "_") |>
+      str_replace("BCRT", "Certainty") |>
+      str_replace("B", "Belief") |>
+      str_replace("P", "Preference")
+  ) |>
+  select(-Variable) |>
+  left_join(nat_domains_questions, by = "Label")
+data_nat_long_fractions <- data_nat_long |>
+  count(Response, Label, Topic, Type, Preference_q, Belief_q) |>
+  mutate(Fraction = n / sum(n), .by = c(Topic, Type))
+data_nat_long_fractions |>
+  ggplot(aes(x = Response, y = Fraction, fill = Fraction)) +
+  geom_col() +
+  scale_fill_viridis_c() +
+  facet_grid(Topic ~ Type)
+```
+
+```{r}
+#| label: fig-belief-pref-distributions-2
+#| fig-cap: "Belief and preference distributions in Likert-scale plotting. Questions in @tbl-belief-pref-questions."
+#| fig-height: 3
+data_nat_long_fractions |>
+  filter(Type != "Certainty") |>
+  ggplot(aes(
+    y = Topic |> fct_rev(),
+    fill = Response |> as.factor(),
+    x = Fraction
+  )) +
+  geom_col(position = "likert") +
+  facet_wrap(~Type, ncol = 1) +
+  scale_fill_brewer(type = "div", palette = "RdBu") +
+  labs(x = "Fraction of responses", y = "") +
+  guides(fill = "none")
+```
+
+```{r}
+#| label: tbl-belief-pref-summary
+#| fig-cap: "Belief, certainty, and preference summary statistics for the five national topics. Questions in @tbl-belief-pref-questions."
+data_nat_long |>
+  summarise(
+    Mean = mean(Response),
+    SD = sd(Response),
+    .by = c(Topic, Type)
+  ) |>
+  pivot_wider(
+    names_from = Type,
+    values_from = c(Mean, SD),
+    names_sep = " ",
+    names_vary = "slowest"
+  ) |>
+  gt() |>
+  fmt_number(columns = everything(), decimals = 2) |>
+  data_color(
+    columns = starts_with("Mean"),
+    palette = "BuGn",
+    method = "numeric",
+    domain = c(3.5, 9.5)
+  ) |>
+  data_color(
+    columns = starts_with("SD"),
+    palette = "OrRd",
+    method = "numeric",
+    domain = c(1, 3.5)
+  )
+```
+
+
+
+## Belief-Preference Relation
+
+Insights: 
+
+- On **economics** and **welfare** the belief-preference relation is **strongly positively** correlated. (Who believes economic inequality is too high strongly tends to agree that the tax for the highest incomes must be raised; and who believes people who need public support do not always receive enough help tends to agree that the transfer income for the poorest cash assistance recipients must be increased.)
+- On **security** and **climate change** the belief-preference relation is **moderately negatively** correlated. (Who believes Denmark faces serious security threats is tends to disagree that Denmark spends too much money on supporting Ukraine; and who believes climate change poses an urgent threat to Denmark tends to disagree that nuclear power must be part of the energy supply.)
+- On **immigration** the belief-preference relation is essentially uncorrelated. (The belief that immigrants are not integrating well does not predict the preference for opening up more foreign labor non-European countries.)
+
+```{r}
+#| label: fig-belief-pref-relation
+#| fig-cap: "Belief-preference relation for the five national topics. Questions in @tbl-belief-pref-questions."
+data_nat_belpref_fraction <- data_nat_long |>
+  filter_out(Type == "Certainty") |>
+  select(userId, Type, Topic, Response) |>
+  pivot_wider(names_from = Type, values_from = Response) |>
+  count(Belief, Preference, Topic) |>
+  mutate(Fraction = n / sum(n), .by = Topic)
+
+data_nat_belpref_fraction |>
+  ggplot(aes(x = Belief, y = Preference)) +
+  geom_point(aes(size = Fraction, color = Fraction)) +
+  geom_smooth(method = "lm", aes(weight = Fraction), formula = 'y ~ x') +
+  scale_size_area(max_size = 7) +
+  scale_color_gradient(high = "darkgreen", low = "lightgray") +
+  scale_x_continuous(breaks = seq(0, 10, by = 2)) +
+  scale_y_continuous(breaks = seq(0, 10, by = 2)) +
+  facet_wrap(~Topic) +
+  theme_minimal() +
+  guides(color = "none") +
+  theme(legend.position = c(1, 0), legend.justification = c(1, 0))
+```
+
+
+## Belief Extremity and Certainty
+
+Belief extremity is calculated as the absolute distance of the belief response from the neutral point (5).
+
+```{r}
+#| label: fig-belief-extremity-certainty
+#| fig-cap: "Belief extremity and certainty for the five national topics. Questions in @tbl-belief-pref-questions."
+data_nat_extr <- data_nat_long |>
+  filter_out(Type == "Preference") |>
+  pivot_wider(names_from = Type, values_from = Response) |>
+  mutate(Belief_Extremity = abs(5 - Belief), .by = Topic)
+data_nat_extr_fraction <- data_nat_extr |>
+  count(Belief_Extremity, Certainty, Topic) |>
+  mutate(Fraction = n / sum(n), .by = Topic)
+```
+
+Insights:
+
+- Belief extremity and certainty are positively related for all topics in a very similar way. The overall correlation is `r cor(data_nat_extr |> pull(Belief_Extremity), data_nat_extr |> pull(Certainty)) |> round(digit = 2)`.
+
+```{r}
+data_nat_extr_fraction |>
+  ggplot(aes(x = Certainty, y = Belief_Extremity)) +
+  geom_point(aes(size = Fraction, color = Fraction)) +
+  geom_smooth(aes(weight = Fraction), method = "lm", formula = 'y ~ x') +
+  scale_size_area(max_size = 7) +
+  scale_color_gradient(high = "darkgreen", low = "lightgray") +
+  scale_x_continuous(breaks = seq(0, 10, by = 2)) +
+  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
+  facet_wrap(~Topic) +
+  theme_minimal() +
+  guides(color = "none") +
+  theme(legend.position = c(1, 0), legend.justification = c(1, 0))
+```
+
+
+## Principal Component Analysis on national topics
+
+### Beliefs
+
+```{r}
+#| label: fig-belief-pca
+#| fig-cap: "Principal Component Analysis on beliefs for the five national topics. Questions in @tbl-belief-pref-questions."
+#| fig-height: 6.5
+#| fig-width: 10
+prcomp_bel_nat <- data_nat_long |>
+  filter(Type == "Belief") |>
+  select(userId, Topic, Response) |>
+  pivot_wider(names_from = Topic, values_from = Response) |>
+  select(-userId) |>
+  prcomp(scale. = TRUE)
+prcomp_bel_nat$x <- prcomp_bel_nat$x |>
+  as_tibble() |>
+  bind_cols(data |> select(-...1))
+
+prcomp_plot <- function(
+  pr,
+  color_by = VOTE_NAT_PRTY,
+  color_by_label = "Vote National Party",
+  plot_heights = c(1, 3.5)
+) {
+  rel_pcs <- sum(pr$sdev > 1)
+  g1 <- tibble(
+    explVar = pr$sdev^2 / sum(pr$sdev^2),
+    cumexplVar = cumsum(pr$sdev^2 / sum(pr$sdev^2))
+  ) |>
+    ggplot(aes(x = 1:length(explVar))) +
+    geom_col(aes(y = explVar)) +
+    geom_point(aes(y = cumexplVar)) +
+    geom_line(aes(y = cumexplVar)) +
+    geom_hline(yintercept = 1 / length(pr$sdev), color = "red") +
+    scale_y_continuous(labels = percent_format(accuracy = 1)) +
+    labs(
+      x = "Principal Component",
+      y = "Explained Variance",
+      #title = glue("{rel_pcs} PCs explain more variance than average")
+    ) +
+    theme_minimal() +
+    theme(plot.title.position = "plot")
+  g2 <- pr$rotation |>
+    as_tibble() |>
+    mutate(Topic = fct_inorder(pr$rotation |> row.names()) |> fct_rev()) |>
+    pivot_longer(starts_with("PC"), names_to = "PC", values_to = "Loading") |>
+    mutate(PC = fct_inorder(PC)) |>
+    ggplot(aes(x = Loading, y = Topic)) +
+    geom_col() +
+    facet_wrap(~PC, ncol = 5) +
+    labs(
+      x = "Loading",
+      y = ""
+    ) +
+    theme_minimal()
+  g3 <- pr$x |>
+    as_tibble() |>
+    ggplot(aes(x = PC1, y = PC2, color = {{ color_by }})) +
+    geom_point(alpha = 1) +
+    labs(
+      x = "PC1",
+      y = "PC2",
+      color = color_by_label
+    ) +
+    theme_minimal()
+  (g1 + g2 + plot_layout(widths = c(1, 5))) /
+    free(g3) +
+    plot_layout(heights = plot_heights)
+}
+prcomp_plot(prcomp_bel_nat, VOTE_NAT_PRTY, "Vote for National Party")
+```
+
+### Preferences
+
+```{r}
+#| label: fig-pref-pca  
+#| fig-cap: "Principal Component Analysis on preferences for the five national topics. Questions in @tbl-belief-pref-questions."
+#| #| fig-height: 6.5
+#| fig-width: 10
+prcomp_pref_nat <- data_nat_long |>
+  filter(Type == "Preference") |>
+  select(userId, Topic, Response) |>
+  pivot_wider(names_from = Topic, values_from = Response) |>
+  select(-userId) |>
+  prcomp(scale. = TRUE)
+prcomp_pref_nat$x <- prcomp_pref_nat$x |>
+  as_tibble() |>
+  bind_cols(data |> select(-...1))
+prcomp_plot(prcomp_pref_nat, VOTE_NAT_PRTY, "Vote for National Party")
+```
+
+# Local preferences
+
+The survey included the ten most relevant questions from the Voting Advice Application (Kandidattest) for the municipal election. This application is used by voters to find out which local candidate or party matches their preferences best. 
+
+```{r}
+#| label: tbl-local-pref-questions
+#| tbl-cap: "Local preference questions."
+loc_domains_questions <- tibble(
+  Label = paste0("ALCL", 1:10),
+  Preference_q = c(
+    "Municipal tax in Aarhus Municipality must be raised, and the money must be spent on better welfare.",
+    "It is possible to save money in the public sector without affecting public welfare.",
+    "More tasks in the public sector must be solved by private companies.",
+    "Aarhus Municipality must make it cheaper to run a business.",
+    "Aarhus Municipality must prioritize that school pupils are mixed according to ethnicity and social background.",
+    "The politicians must prevent the construction of mosques.",
+    "More parking spaces must be established in Aarhus Municipality.",
+    "The city council's temporary stop for the expansion of Aarhus Harbor must be made permanent.",
+    "Car traffic in Aarhus city center must be limited, for example through one-way directions, speed reductions and a zero-emission zone.",
+    "The municipality must continue with the plans for the new football stadium in Kongelunden, even if the costs rise again."
+  )
+)
+loc_domains_questions_danish <- tibble(
+  Label = paste0("ALCL", 1:10),
+  Preference_q = c(
+    "Kommuneskatten i Aarhus Kommune skal hæves, og pengene skal bruges på bedre velfærd.",
+    "Det er muligt at spare penge i den offentlige sektor uden at påvirke den offentlige velfærd.",
+    "Flere opgaver i den offentlige sektor skal løses af private virksomheder.",
+    "Aarhus Kommune skal gøre det billigere at drive virksomhed.",
+    "Aarhus Kommune skal prioritere, at skoleelever blandes på tværs af etnicitet og social baggrund.",
+    "Politikerne skal forhindre opførelsen af moskéer.",
+    "Der skal etableres flere parkeringspladser i Aarhus Kommune.",
+    "Byrådets midlertidige stop for udvidelsen af Aarhus Havn skal gøres permanent.",
+    "Biltrafikken i Aarhus centrum skal begrænses, for eksempel gennem ensretninger, hastighedsnedsættelser og en nulemissionszone.",
+    "Kommunen skal fortsætte planerne om det nye fodboldstadion i Kongelunden, selv hvis omkostningerne stiger igen."
+  )
+)
+
+# Creat dummy variables for the 3 important topics per respondent
+data_loc <- data |>
+  mutate(
+    ALCL11 = ALCL11 |>
+      str_replace(
+        loc_domains_questions$Preference_q[1],
+        loc_domains_questions$Label[1]
+      ) |>
+      str_replace(
+        loc_domains_questions$Preference_q[2],
+        loc_domains_questions$Label[2]
+      ) |>
+      str_replace(
+        loc_domains_questions$Preference_q[3],
+        loc_domains_questions$Label[3]
+      ) |>
+      str_replace(
+        loc_domains_questions$Preference_q[4],
+        loc_domains_questions$Label[4]
+      ) |>
+      str_replace(
+        loc_domains_questions$Preference_q[5],
+        loc_domains_questions$Label[5]
+      ) |>
+      str_replace(
+        loc_domains_questions$Preference_q[6],
+        loc_domains_questions$Label[6]
+      ) |>
+      str_replace(
+        loc_domains_questions$Preference_q[7],
+        loc_domains_questions$Label[7]
+      ) |>
+      str_replace(
+        loc_domains_questions$Preference_q[8],
+        loc_domains_questions$Label[8]
+      ) |>
+      str_replace(
+        loc_domains_questions$Preference_q[9],
+        loc_domains_questions$Label[9]
+      ) |>
+      str_replace(
+        loc_domains_questions$Preference_q[10],
+        loc_domains_questions$Label[10]
+      ) |>
+      str_replace(
+        loc_domains_questions_danish$Preference_q[1],
+        loc_domains_questions_danish$Label[1]
+      ) |>
+      str_replace(
+        loc_domains_questions_danish$Preference_q[2],
+        loc_domains_questions_danish$Label[2]
+      ) |>
+      str_replace(
+        loc_domains_questions_danish$Preference_q[3],
+        loc_domains_questions_danish$Label[3]
+      ) |>
+      str_replace(
+        loc_domains_questions_danish$Preference_q[4],
+        loc_domains_questions_danish$Label[4]
+      ) |>
+      str_replace(
+        loc_domains_questions_danish$Preference_q[5],
+        loc_domains_questions_danish$Label[5]
+      ) |>
+      str_replace(
+        loc_domains_questions_danish$Preference_q[6],
+        loc_domains_questions_danish$Label[6]
+      ) |>
+      str_replace(
+        loc_domains_questions_danish$Preference_q[7],
+        loc_domains_questions_danish$Label[7]
+      ) |>
+      str_replace(
+        loc_domains_questions_danish$Preference_q[8],
+        loc_domains_questions_danish$Label[8]
+      ) |>
+      str_replace(
+        loc_domains_questions_danish$Preference_q[9],
+        loc_domains_questions_danish$Label[9]
+      ) |>
+      str_replace(
+        loc_domains_questions_danish$Preference_q[10],
+        loc_domains_questions_danish$Label[10]
+      ) |>
+      str_replace(
+        "The city council’s temporary stop for the expansion of Aarhus Harbor must be made permanent.",
+        "ALCL8"
+      ) |>
+      str_remove_all("[\\[\\]\\']") |>
+      str_replace_all("ALCL", "ImpALCL") |>
+      str_split(", ")
+  ) |>
+  unnest(ALCL11) |>
+  mutate(value = 1) |>
+  pivot_wider(names_from = ALCL11, values_from = value, values_fill = 0)
+
+
+loc_domains_questions |>
+  select(Label, Preference_q) |>
+  knitr::kable(
+    col.names = c("Label", "Preference Question")
+  )
+```
+
+## Preference Distributions
+
+The answering categories for the local preference questions were $-2,-1,0,+1,+2$ as in the original Voting advice application. 
+
+```{r}
+data_loc_long <- data_loc |>
+  pivot_longer(
+    cols = c(paste0("ALCL", 1:10), paste0("ImpALCL", 1:10)),
+    names_to = "Label",
+    values_to = "Response"
+  ) |>
+  left_join(loc_domains_questions, by = "Label") |>
+  mutate(Label = Label |> fct_inorder())
+
+
+data_loc_long <- data |>
+  pivot_longer(
+    paste0("ALCL", 1:10),
+    names_to = "Label",
+    values_to = "Response"
+  ) |>
+  left_join(loc_domains_questions, by = "Label") |>
+  mutate(Label = Label |> fct_inorder())
+data_loc_long_fractions <- data_loc_long |>
+  count(Response, Label, Preference_q) |>
+  mutate(Fraction = n / sum(n), .by = Label)
+```
+
+Insights:
+
+- The distribution of preferences only sometimes show a pronounced neutral peak above 40%. Most notable on ALCL4 on making it cheaper to run businesses and ALCL8 on the stopping the expansion of Aarhus Harbor. 
+- Rarely there are pronounced peaks at the two extremes. Only ALCL6 on more mosques and ALCL10 on the new football stadium shows a tri-modal structure with peaks at the two extremes and in the middle. 
+- The most positive topics are ALCL5 (social mixing in schools) and ALCL7 (more parking space) with means above 0.5. 
+- The most negative topic is ALCL3 asking for more tasks in public sectors to be solved by private companies.
+- The most polarized topic are ALCL6, ALCL9 and ALCL10 on mosques, car traffic reduction and the new football stadium. 
+- Least polarized is ALCL4 on making it cheaper to run businesses.
+
+```{r}
+#| label: fig-local-pref-distributions
+#| fig-cap: "Preference distributions for the ten local topics. Questions in @tbl-local-pref-questions."
+data_loc_long_fractions |>
+  ggplot(aes(x = Response, y = Fraction, fill = Fraction)) +
+  geom_col() +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  scale_x_continuous(breaks = -2:2) +
+  scale_fill_viridis_c() +
+  facet_wrap(~Label, nrow = 2)
+```
+
+```{r}
+#| label: fig-local-pref-distributions-2
+#| fig-cap: "Preference distributions for the ten local topics in Likert plotting style. Questions in @tbl-local-pref-questions."
+#| fig-height: 3
+data_loc_long_fractions |>
+  ggplot(aes(
+    y = Label |> fct_rev(),
+    fill = Response |> as.factor(),
+    x = Fraction
+  )) +
+  geom_col(position = "likert") +
+  scale_fill_brewer(type = "div", palette = "RdBu") +
+  labs(x = "Fraction of responses", y = "") +
+  guides(fill = "none")
+```
+
+```{r}
+#| label: tbl-local-pref-summary
+#| tbl-cap: "Preference summary statistics for the ten local topics."
+data_loc_long |>
+  summarise(
+    Question = first(Preference_q),
+    Mean = mean(Response),
+    SD = sd(Response),
+    .by = c(Label)
+  ) |>
+  gt() |>
+  fmt_number(columns = everything(), decimals = 2) |>
+  data_color(
+    columns = starts_with("Mean"),
+    palette = "BuGn",
+    method = "numeric",
+    domain = c(-1, +1)
+  ) |>
+  data_color(
+    columns = starts_with("SD"),
+    palette = "OrRd",
+    method = "numeric",
+    domain = c(0.5, 1.5)
+  )
+```
+
+## Principal Component Analysis on local preferences
+
+Insights:
+
+- The Principal Component Analysis (PCA) shows PC1 capturing more than 30% of the variance of the 10 local preference items, and PC2 captures 12%, and PC3 and PC4 still slightly more than the average 10%. 
+- tbc
+
+
+
+```{r}
+#| label: fig-local-pca
+#| fig-cap: "Principal Component Analysis on local preferences for the ten topics. Questions in @tbl-local-pref-questions."
+#| fig-height: 8
+#| fig-width: 10
+prcomp_pref_loc <- data |>
+  select(paste0("ALCL", 1:10)) |>
+  prcomp(scale. = TRUE)
+prcomp_pref_loc$x <- prcomp_pref_loc$x |>
+  as_tibble() |>
+  bind_cols(data |> select(-...1))
+
+prcomp_plot(
+  prcomp_pref_loc,
+  VOTE_LOC_PRTY,
+  "Vote for Local Party",
+  plot_heights = c(1, 2)
+)
+```
+
+These are the loadings the original variables have on PC1 to PC4 regarding the 10 local preference items. The original variables are ordered according to their loading on PC1. 
+
+
+# Voting System Satisfaction and Reform
+
+In Danish national elections, each voter casts one vote for a party or candidate; and seats
+in Parliament are allocated using proportional representation. Overall, how satisfied are
+you with this voting system?
+
+```{r}
+data |>
+  ggplot(aes(x = SSBS1)) +
+  geom_bar(aes(y = after_stat(count / sum(count))), stat = "count") +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  scale_x_continuous(breaks = 0:10)
+```
+
+
+I am confident that I understand how my vote is translated into the final election outcome
+under the current system.
+
+```{r}
+data |>
+  ggplot(aes(x = SSBS2)) +
+  geom_bar(aes(y = after_stat(count / sum(count))), stat = "count") +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  scale_x_continuous(breaks = 0:10)
+```
+
+
+
+In some electoral systems, voters can allocate more than one vote across candidates or
+parties, rather than casting only a single vote. To what extent would you support or oppose
+introducing such a system?
+
+```{r}
+data |>
+  ggplot(aes(x = SQDR1)) +
+  geom_bar(aes(y = after_stat(count / sum(count))), stat = "count") +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  scale_x_continuous(breaks = 0:10)
+```
+
+
+```{r}
+data |>
+  ggplot(aes(y = SRQV1)) +
+  geom_bar(aes(x = after_stat(count / sum(count))), stat = "count") +
+  scale_y_discrete(labels = function(x) stringr::str_wrap(x, width = 20)) +
+  scale_x_continuous(labels = percent_format(accuracy = 1))
+```

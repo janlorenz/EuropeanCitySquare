@@ -1,0 +1,50 @@
+/* css styles */
+
+.text-red {color: red;}
+.text-green {color: green;}
+.text-data {color: #3246f9;}
+.text-init {color: #952bb3;}
+.text-valid {color: #b21360;}
+.text-model1 {color: #0fc8b0;}
+.text-model2 {color: #47bb09;}
+
+.boxed-data {
+  display: inline-block;
+  padding: 0rem 0.2rem;
+  background-color: var(--boxed-fill, #c1cffc);
+  border: 1px solid var(--boxed-line, #3246f9);
+  color: inherit;
+  font-weight: inherit;
+}
+.boxed-init {
+  display: inline-block;
+  padding: 0rem 0.2rem;
+  background-color: var(--boxed-fill, #edb9fb);
+  border: 1px solid var(--boxed-line, #952bb3);
+  color: inherit;
+  font-weight: inherit;
+}
+.boxed-valid {
+  display: inline-block;
+  padding: 0rem 0.2rem;
+  background-color: var(--boxed-fill, #feb3d8);
+  border: 1px solid var(--boxed-line, #b21360);
+  color: inherit;
+  font-weight: inherit;
+}
+.boxed-model1 {
+  display: inline-block;
+  padding: 0rem 0.2rem;
+  background-color: var(--boxed-fill, #abfce9);
+  border: 1px solid var(--boxed-line, #0fc8b0);
+  color: inherit;
+  font-weight: inherit;
+}
+.boxed-model2 {
+  display: inline-block;
+  padding: 0rem 0.2rem;
+  background-color: var(--boxed-fill, #b8ff92);
+  border: 1px solid var(--boxed-line, #47bb09);
+  color: inherit;
+  font-weight: inherit;
+}

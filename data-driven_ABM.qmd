@@ -1,0 +1,24 @@
+---
+title: "Data-driven agent-based modeling"
+format: html
+---
+
+The following steps are how data is used in the process of building and validating an agent-based model following @Lorenz2021DatadrivenAgentbasedModeling. @fig-data-driven-ABM gives an overview of the process.
+
+![Data-driven agent-based modeling [@Lorenz2021DatadrivenAgentbasedModeling].](figs/Data-driven%20ABM%20Chapter%20Figs.png){#fig-data-driven-ABM width=100%}
+
+
+## Initialization
+
+Setting up the foundational state of the model. The simulation environment is created and the initial values of its parameters are set. The agents are created and the initial states for their static and/or dynamic variables are set. Doing it data-driven means in the first place that the variables are analog to variables which are observable in the real world. This enables validation and calibration with empirical data. Data-driven initialization can also mean more specifically that the initial values of the variables are set based on empirical data. While this can be a starting point for a realistic simulation run, it goes againt the goal of having the model be able to reproduce the distribution of the variables as an emergent property of the model. 
+
+## Exploratory Data Analysis 
+Exploration of empirical data to understand the distribution of the variables and their relationships, and to identify stylized facts that the model should be able to reproduce. Done by visualizing, calculating standard summary statistics, and defining relevant targeted metrics.
+
+## Validation
+
+Data-driven validation is measuring a model's ability to reproduce empirical stylized facts. This is also called *assessing the replicative validity*. Methods and metric can be similar as for macro-calibration (see below) but with a different focus. While calibration is model-internal parameter-tuning process to make it match data better, validation is a model-external assessment about its quality. 
+
+## Calibration
+
+Adjusting free parameters and simulation procedures such the the model matches its real-world subject better. Data-driven *micro-calibration* means that parameters and simulation procedures have realisitic microlevel foundations. Data-driven phenomenological *macro-calibration* means that parameters and simulation procedures are adjusted to match the stylized facts as quantifies be macrolevel metrics. While the former is imporant for counter-factual scenario studies, the latter is important for building forecasting models. Ideally, both do not lead to strong deviations but are consistent with each other. 

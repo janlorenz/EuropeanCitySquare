@@ -1,0 +1,33 @@
+project:
+  type: website
+  render: 
+    - "*.qmd"
+
+website:
+  title: "European City Squared"
+  navbar:
+    left:
+      - text: Outline
+        href: index.qmd
+      - text: Survey Results
+        href: survey.qmd
+      - text: Data-drive ABM
+        href: data-driven_ABM.qmd
+
+bibliography: 
+  - ABM-LLM.bib
+  - EuropeanCity2.bib
+
+format:
+  html:
+    echo: true
+    theme:
+      - cosmo
+      - brand
+    css: styles.css
+    toc: true
+    number-sections: true
+
+
+
+
