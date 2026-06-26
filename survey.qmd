@@ -12,12 +12,28 @@ The survey was conducted in the population of Aarhus, Denmark, and includes ques
 #| message: false
 library(tidyverse)
 library(ggstats)
+library(ggExtra)
+library(corrr)
 library(scales)
 library(gt)
 library(patchwork)
-library(partycoloR)
 library(glue)
 data <- read_csv("survey_responses_ENG_TRANS.csv")
+cand <- read_csv("data/aarhus_candidates_local_2025.csv")
+# cross-walk Qx - ALCLx
+crosswalk <- tribble(
+  ~Q    , ~ALCL    ,
+  "Q6"  , "ALCL1"  ,
+  "Q5"  , "ALCL2"  ,
+  "Q1"  , "ALCL3"  ,
+  "Q8"  , "ALCL4"  ,
+  "Q17" , "ALCL5"  ,
+  "Q21" , "ALCL6"  ,
+  "Q22" , "ALCL7"  ,
+  "Q23" , "ALCL8"  ,
+  "Q24" , "ALCL9"  ,
+  "Q25" , "ALCL10"
+)
 ```
 
 # National Topics 
@@ -154,7 +170,8 @@ data_nat_long |>
     palette = "OrRd",
     method = "numeric",
     domain = c(1, 3.5)
-  )
+  ) |>
+  opt_interactive()
 ```
 
 
@@ -222,6 +239,10 @@ data_nat_extr_fraction |>
   scale_x_continuous(breaks = seq(0, 10, by = 2)) +
   scale_y_continuous(breaks = seq(0, 5, by = 1)) +
   facet_wrap(~Topic) +
+  labs(
+    x = "Belief Certainty",
+    y = "Belief Extremity"
+  ) +
   theme_minimal() +
   guides(color = "none") +
   theme(legend.position = c(1, 0), legend.justification = c(1, 0))
@@ -245,7 +266,7 @@ prcomp_bel_nat <- data_nat_long |>
   prcomp(scale. = TRUE)
 prcomp_bel_nat$x <- prcomp_bel_nat$x |>
   as_tibble() |>
-  bind_cols(data |> select(-...1))
+  bind_cols(data)
 
 prcomp_plot <- function(
   pr,
@@ -293,9 +314,10 @@ prcomp_plot <- function(
       y = "PC2",
       color = color_by_label
     ) +
-    theme_minimal()
+    theme_minimal() +
+    theme(legend.position = "left")
   (g1 + g2 + plot_layout(widths = c(1, 5))) /
-    free(g3) +
+    wrap_elements(g3 |> ggMarginal(type = "histogram", groupFill = TRUE)) +
     plot_layout(heights = plot_heights)
 }
 prcomp_plot(prcomp_bel_nat, VOTE_NAT_PRTY, "Vote for National Party")
@@ -306,7 +328,7 @@ prcomp_plot(prcomp_bel_nat, VOTE_NAT_PRTY, "Vote for National Party")
 ```{r}
 #| label: fig-pref-pca  
 #| fig-cap: "Principal Component Analysis on preferences for the five national topics. Questions in @tbl-belief-pref-questions."
-#| #| fig-height: 6.5
+#| fig-height: 6.5
 #| fig-width: 10
 prcomp_pref_nat <- data_nat_long |>
   filter(Type == "Preference") |>
@@ -316,13 +338,15 @@ prcomp_pref_nat <- data_nat_long |>
   prcomp(scale. = TRUE)
 prcomp_pref_nat$x <- prcomp_pref_nat$x |>
   as_tibble() |>
-  bind_cols(data |> select(-...1))
+  bind_cols(data)
 prcomp_plot(prcomp_pref_nat, VOTE_NAT_PRTY, "Vote for National Party")
 ```
 
 # Local preferences
 
-The survey included the ten most relevant questions from the Voting Advice Application (Kandidattest) for the municipal election. This application is used by voters to find out which local candidate or party matches their preferences best. 
+The survey included the ten most relevant questions from the Voting Advice Application (Kandidattest) for the municipal election. The This application is used by voters to find out which local candidate or party matches their preferences best. 
+
+The Voting Advice Application used a four-point scale for the local preference questions with $-2$ (*Strongly disagree*), $-1$ (*Disagree*), $+1$ (*Agree*), and $+2$ (*Strongly agree*). In our survey also $0$ being *Neither agree nor disagree* was included.
 
 ```{r}
 #| label: tbl-local-pref-questions
@@ -340,6 +364,18 @@ loc_domains_questions <- tibble(
     "The city council's temporary stop for the expansion of Aarhus Harbor must be made permanent.",
     "Car traffic in Aarhus city center must be limited, for example through one-way directions, speed reductions and a zero-emission zone.",
     "The municipality must continue with the plans for the new football stadium in Kongelunden, even if the costs rise again."
+  ),
+  Preference_s = c(
+    "Raise taxes",
+    "Save public money",
+    "Privatize",
+    "Cheaper Business",
+    "Mixed schools",
+    "No mosques",
+    "More parking",
+    "Harbor stop",
+    "Limit cars",
+    "Stadium"
   )
 )
 loc_domains_questions_danish <- tibble(
@@ -358,137 +394,203 @@ loc_domains_questions_danish <- tibble(
   )
 )
 
-# Creat dummy variables for the 3 important topics per respondent
-data_loc <- data |>
-  mutate(
-    ALCL11 = ALCL11 |>
-      str_replace(
-        loc_domains_questions$Preference_q[1],
-        loc_domains_questions$Label[1]
-      ) |>
-      str_replace(
-        loc_domains_questions$Preference_q[2],
-        loc_domains_questions$Label[2]
-      ) |>
-      str_replace(
-        loc_domains_questions$Preference_q[3],
-        loc_domains_questions$Label[3]
-      ) |>
-      str_replace(
-        loc_domains_questions$Preference_q[4],
-        loc_domains_questions$Label[4]
-      ) |>
-      str_replace(
-        loc_domains_questions$Preference_q[5],
-        loc_domains_questions$Label[5]
-      ) |>
-      str_replace(
-        loc_domains_questions$Preference_q[6],
-        loc_domains_questions$Label[6]
-      ) |>
-      str_replace(
-        loc_domains_questions$Preference_q[7],
-        loc_domains_questions$Label[7]
-      ) |>
-      str_replace(
-        loc_domains_questions$Preference_q[8],
-        loc_domains_questions$Label[8]
-      ) |>
-      str_replace(
-        loc_domains_questions$Preference_q[9],
-        loc_domains_questions$Label[9]
-      ) |>
-      str_replace(
-        loc_domains_questions$Preference_q[10],
-        loc_domains_questions$Label[10]
-      ) |>
-      str_replace(
-        loc_domains_questions_danish$Preference_q[1],
-        loc_domains_questions_danish$Label[1]
-      ) |>
-      str_replace(
-        loc_domains_questions_danish$Preference_q[2],
-        loc_domains_questions_danish$Label[2]
-      ) |>
-      str_replace(
-        loc_domains_questions_danish$Preference_q[3],
-        loc_domains_questions_danish$Label[3]
-      ) |>
-      str_replace(
-        loc_domains_questions_danish$Preference_q[4],
-        loc_domains_questions_danish$Label[4]
-      ) |>
-      str_replace(
-        loc_domains_questions_danish$Preference_q[5],
-        loc_domains_questions_danish$Label[5]
-      ) |>
-      str_replace(
-        loc_domains_questions_danish$Preference_q[6],
-        loc_domains_questions_danish$Label[6]
-      ) |>
-      str_replace(
-        loc_domains_questions_danish$Preference_q[7],
-        loc_domains_questions_danish$Label[7]
-      ) |>
-      str_replace(
-        loc_domains_questions_danish$Preference_q[8],
-        loc_domains_questions_danish$Label[8]
-      ) |>
-      str_replace(
-        loc_domains_questions_danish$Preference_q[9],
-        loc_domains_questions_danish$Label[9]
-      ) |>
-      str_replace(
-        loc_domains_questions_danish$Preference_q[10],
-        loc_domains_questions_danish$Label[10]
-      ) |>
-      str_replace(
-        "The city council’s temporary stop for the expansion of Aarhus Harbor must be made permanent.",
-        "ALCL8"
-      ) |>
-      str_remove_all("[\\[\\]\\']") |>
-      str_replace_all("ALCL", "ImpALCL") |>
-      str_split(", ")
-  ) |>
-  unnest(ALCL11) |>
-  mutate(value = 1) |>
-  pivot_wider(names_from = ALCL11, values_from = value, values_fill = 0)
-
-
 loc_domains_questions |>
-  select(Label, Preference_q) |>
+  select(Label, Preference_s, Preference_q) |>
   knitr::kable(
-    col.names = c("Label", "Preference Question")
+    col.names = c("Label", "Short", "Preference Question")
   )
 ```
 
-## Preference Distributions
+## Parties
 
-The answering categories for the local preference questions were $-2,-1,0,+1,+2$ as in the original Voting advice application. 
+Party preference profiles (ten ALCL survey items) can be derived from the candidates and from the citizens which reposndet in the survey. 
 
 ```{r}
-data_loc_long <- data_loc |>
+#| label: tbl-local-parties
+#| tbl-cap: "Local parties averaged candidate preference profile. "
+parties_cand <- cand |>
+  mutate(
+    party_full = party,
+    party = party_full |>
+      fct_relevel(sort(levels(party_full))) |>
+      fct_lump_min(6, other_level = "Other Party") |>
+      fct_other(
+        drop = "N. Nej til privatisering af kommunale veje",
+        other_level = "Other Party"
+      ) |>
+      fct_relevel("Other Party", after = Inf)
+  ) |>
   pivot_longer(
-    cols = c(paste0("ALCL", 1:10), paste0("ImpALCL", 1:10)),
+    cols = paste0("Q", 1:26),
+    names_to = "Name",
+    values_to = "Preference"
+  ) |>
+  left_join(crosswalk, by = c("Name" = "Q")) |>
+  filter_out(is.na(ALCL)) |>
+  summarize(
+    Mean = mean(Preference, na.rm = TRUE),
+    SD = sd(Preference, na.rm = TRUE),
+    N_cand = n(),
+    .by = c(party, ALCL)
+  ) |>
+  mutate(ALCL = ALCL |> factor(labels = paste0("ALCL", 1:10))) |>
+  left_join(
+    loc_domains_questions |> select(Label, Preference_s),
+    by = c("ALCL" = "Label")
+  ) |>
+  rename(Description = Preference_s) |>
+  arrange(party)
+parties_cand |>
+  select(party, ALCL, Description, Mean, N_cand) |>
+  pivot_wider(
+    names_from = c(ALCL, Description),
+    values_from = c(Mean),
+    names_sep = "<br>"
+  ) |>
+  gt() |>
+  tab_header(
+    title = "Local party profiles based on candidate preferences"
+  ) |>
+  cols_label(
+    party = "Party",
+    N_cand = "Candidates"
+  ) |>
+  cols_label_with(starts_with("ALCL"), md) |>
+  fmt_number(columns = everything(), decimals = 2) |>
+  fmt_number(columns = c(N_cand), decimals = 0) |>
+  data_color(
+    columns = starts_with("ALCL"),
+    palette = "RdBu",
+    method = "numeric",
+    domain = c(-2, 2)
+  ) |>
+  cols_width(
+    party ~ px(200),
+    N_cand ~ px(100),
+    starts_with("ALCL") ~ px(85)
+  ) |>
+  tab_footnote(
+    "Only parties with at least six candidates and more than 2% respondents in the people survey are included."
+  ) |>
+  opt_interactive(use_pagination = FALSE)
+```
+
+```{r}
+#| label: tbl-local-parties-respondents
+#| tbl-cap: "Local parties averaged respondents profiles."
+parties_resp <- data |>
+  mutate(
+    party = VOTE_LOC_PRTY |>
+      fct_relevel(sort(levels(VOTE_LOC_PRTY))) |>
+      fct_lump_min(16, other_level = "Other Party") |>
+      fct_na_value_to_level("Potential Non-Voter") |>
+      fct_other(drop = "Don't know", other_level = "Potential Non-Voter") |>
+      fct_relevel("Other Party", after = Inf)
+  ) |>
+  pivot_longer(
+    cols = paste0("ALCL", 1:10),
+    names_to = "ALCL",
+    values_to = "Preference"
+  ) |>
+  summarize(
+    Mean = mean(Preference, na.rm = TRUE),
+    SD = sd(Preference, na.rm = TRUE),
+    N_resp = n(),
+    .by = c(party, ALCL)
+  ) |>
+  left_join(
+    loc_domains_questions |> select(Label, Preference_s),
+    by = c("ALCL" = "Label")
+  ) |>
+  rename(Description = Preference_s) |>
+  arrange(party)
+parties_resp |>
+  select(party, ALCL, Description, Mean, N_resp) |>
+  pivot_wider(
+    names_from = c(ALCL, Description),
+    values_from = c(Mean),
+    names_sep = "<br>"
+  ) |>
+  gt() |>
+  tab_header(
+    title = "Local party profiles based on survey respondents preferences and revealed votes"
+  ) |>
+  cols_label(
+    party = "Party",
+    N_resp = "Respondents"
+  ) |>
+  cols_label_with(starts_with("ALCL"), md) |>
+  fmt_number(columns = everything(), decimals = 2) |>
+  fmt_number(columns = c(N_resp), decimals = 0) |>
+  data_color(
+    columns = starts_with("ALCL"),
+    palette = "RdBu",
+    method = "numeric",
+    domain = c(-2, 2)
+  ) |>
+  cols_width(
+    party ~ px(200),
+    N_resp ~ px(100),
+    starts_with("ALCL") ~ px(85)
+  ) |>
+  tab_footnote(
+    "NA and \"Don't know\" as \"Potential Non-Voters\", and parties with less than 5 respondents as 'Other Party'."
+  ) |>
+  opt_interactive(use_pagination = FALSE)
+```
+
+```{r}
+bind_rows(
+  parties_resp |> mutate(Source = "Respondents") |> rename(N = N_resp),
+  parties_cand |> mutate(Source = "Candidates") |> rename(N = N_cand)
+) |>
+  filter(party != "Other Party", party != "Potential Non-Voter") |>
+  mutate(ALCL = str_remove(ALCL, "ALCL") |> as.numeric()) |>
+  ggplot(aes(x = ALCL, y = Mean, color = Source)) +
+  geom_hline(yintercept = 0, color = "gray") +
+  geom_point() +
+  geom_line(aes(group = Source)) +
+  facet_wrap(~party, ncol = 3) +
+  scale_x_continuous(breaks = 1:10, minor_breaks = 1:10) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+
+
+## Preferences and Topic Importantance
+
+```{r}
+#| label: data-pref-importance-long
+data_loc_long <- data |>
+  pivot_longer(
+    cols = c(paste0("ALCL", 1:10), paste0("ALCL", 1:10, "_imp")),
     names_to = "Label",
     values_to = "Response"
   ) |>
-  left_join(loc_domains_questions, by = "Label") |>
-  mutate(Label = Label |> fct_inorder())
-
-
-data_loc_long <- data |>
-  pivot_longer(
-    paste0("ALCL", 1:10),
-    names_to = "Label",
-    values_to = "Response"
+  mutate(
+    Type = if_else(
+      str_detect(Label, "_imp"),
+      "Importance",
+      "Preference"
+    ),
+    Label = str_remove(Label, "_imp")
+  ) |>
+  pivot_wider(names_from = Type, values_from = Response) |>
+  mutate(
+    Importance = if_else(Importance == 1, "Important", "Not Important") |>
+      fct_inorder()
   ) |>
   left_join(loc_domains_questions, by = "Label") |>
   mutate(Label = Label |> fct_inorder())
 data_loc_long_fractions <- data_loc_long |>
-  count(Response, Label, Preference_q) |>
+  count(Label, Preference, Importance) |>
   mutate(Fraction = n / sum(n), .by = Label)
 ```
+
+The answering categories for the local preference questions were $-2,-1,0,+1,+2$ as in the original Voting Advice Application. 
+
+Additionally, each respondent was asked to select the three most important local topics for them. The following table shows the fraction of respondents that selected each topic as one of their three most important topics.
 
 Insights:
 
@@ -500,14 +602,62 @@ Insights:
 - Least polarized is ALCL4 on making it cheaper to run businesses.
 
 ```{r}
+#| label: fig-local-pref-importance
+#| fig-cap: "Distributions of local preferences and its relation to whether the topic was also marked as important."
+pi1 <- data_loc_long_fractions |>
+  mutate(Fraction = Fraction / 10) |>
+  ggplot(aes(x = Preference, y = Fraction, fill = Importance)) +
+  geom_col() +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  scale_fill_manual(
+    values = c("Not Important" = "darkgray", "Important" = "darkmagenta")
+  ) +
+  labs(title = "Total fractions") +
+  guides(fill = "none") +
+  theme_minimal()
+
+pi2 <- data_loc_long |>
+  count(Preference, Importance) |>
+  mutate(Fraction = n / sum(n), .by = Importance) |>
+  ggplot(aes(x = Preference, y = Fraction, fill = Importance)) +
+  geom_col() +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  scale_fill_manual(
+    values = c("Not Important" = "darkgray", "Important" = "darkmagenta")
+  ) +
+  facet_wrap(~Importance, nrow = 2) +
+  labs(title = "Fractions normalized\nby importance") +
+  guides(fill = "none") +
+  theme_minimal()
+
+pi3 <- data_loc_long |>
+  count(Preference, Importance) |>
+  mutate(Fraction = n / sum(n), .by = Preference) |>
+  ggplot(aes(x = Preference, y = Fraction, fill = Importance)) +
+  geom_col() +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  scale_fill_manual(
+    values = c("Not Important" = "darkgray", "Important" = "darkmagenta")
+  ) +
+  labs(title = "Fractions normalized\nby preference") +
+  guides(fill = "none") +
+  theme_minimal()
+
+pi1 + pi2 + pi3 + plot_layout(nrow = 1)
+```
+
+
+```{r}
 #| label: fig-local-pref-distributions
 #| fig-cap: "Preference distributions for the ten local topics. Questions in @tbl-local-pref-questions."
 data_loc_long_fractions |>
-  ggplot(aes(x = Response, y = Fraction, fill = Fraction)) +
+  ggplot(aes(x = Preference, y = Fraction, fill = Importance)) +
   geom_col() +
   scale_y_continuous(labels = percent_format(accuracy = 1)) +
   scale_x_continuous(breaks = -2:2) +
-  scale_fill_viridis_c() +
+  scale_fill_manual(
+    values = c("Important" = "darkmagenta", "Not Important" = "darkgray")
+  ) +
   facet_wrap(~Label, nrow = 2)
 ```
 
@@ -516,9 +666,10 @@ data_loc_long_fractions |>
 #| fig-cap: "Preference distributions for the ten local topics in Likert plotting style. Questions in @tbl-local-pref-questions."
 #| fig-height: 3
 data_loc_long_fractions |>
+  summarise(Fraction = sum(Fraction), .by = c(Label, Preference)) |>
   ggplot(aes(
     y = Label |> fct_rev(),
-    fill = Response |> as.factor(),
+    fill = Preference |> as.factor(),
     x = Fraction
   )) +
   geom_col(position = "likert") +
@@ -529,27 +680,44 @@ data_loc_long_fractions |>
 
 ```{r}
 #| label: tbl-local-pref-summary
-#| tbl-cap: "Preference summary statistics for the ten local topics."
+#| tbl-cap: "Preference summary statistics for the ten local topics. (Interactive sorting by clicking on column headers.)"
 data_loc_long |>
   summarise(
     Question = first(Preference_q),
-    Mean = mean(Response),
-    SD = sd(Response),
+    Importance = mean(as.numeric(Importance) - 1),
+    Mean = mean(Preference),
+    SD = sd(Preference),
     .by = c(Label)
   ) |>
+  arrange(desc(Importance)) |>
   gt() |>
   fmt_number(columns = everything(), decimals = 2) |>
+  fmt_percent(columns = Importance, decimals = 1) |>
   data_color(
     columns = starts_with("Mean"),
     palette = "BuGn",
     method = "numeric",
-    domain = c(-1, +1)
+    domain = c(-0.6, +0.6)
   ) |>
   data_color(
     columns = starts_with("SD"),
     palette = "OrRd",
     method = "numeric",
     domain = c(0.5, 1.5)
+  ) |>
+  data_color(
+    columns = starts_with("Importance"),
+    palette = "PuRd",
+    method = "numeric",
+    domain = c(0, 0.5)
+  ) |>
+  opt_interactive(use_pagination = FALSE) |>
+  cols_width(
+    Label ~ px(90),
+    Question ~ px(420),
+    Importance ~ px(120),
+    Mean ~ px(80),
+    SD ~ px(80)
   )
 ```
 
@@ -558,7 +726,7 @@ data_loc_long |>
 Insights:
 
 - The Principal Component Analysis (PCA) shows PC1 capturing more than 30% of the variance of the 10 local preference items, and PC2 captures 12%, and PC3 and PC4 still slightly more than the average 10%. 
-- tbc
+- PC1 has ALCL1 and ALCL9 strongly on the negative side and ALCL2-4 and ALCL6-7 on the positive side. (Note the sign of the PC loadings has no intrinsic positive of negative meaning). ALCL5 and ALCL8 are also on the negative side and ALCL10 loads very low on PC1. So, respondents with negative values in PC1 are in favour of raising taxes for welfare and on limiting car traffic, they also favour (mildly) mixing in schools and stopping the expansion of Aarhus Harbor, while they believe money can't be saved in the public sector, these tasks should not given to private companies, running business need not be cheaper, construction of mosques need not be prevented, and no more parking space is needed. So, negative values of PC1 stand for a classical economically left and culturally liberal profile, and positive values for an culturally conservative/economically liberal profile. The question on the stadium is the only mostly unrelated topic on PC1.    
 
 
 
@@ -572,7 +740,7 @@ prcomp_pref_loc <- data |>
   prcomp(scale. = TRUE)
 prcomp_pref_loc$x <- prcomp_pref_loc$x |>
   as_tibble() |>
-  bind_cols(data |> select(-...1))
+  bind_cols(data)
 
 prcomp_plot(
   prcomp_pref_loc,
@@ -584,52 +752,275 @@ prcomp_plot(
 
 These are the loadings the original variables have on PC1 to PC4 regarding the 10 local preference items. The original variables are ordered according to their loading on PC1. 
 
+## Correlation
+
+Mental models of the preference formation model are based on correlation matrices. To that end we group respondents by not preference related characteristics and calculate the correlation matrices of the ten local preference items for each group.
+
+### Demographic groups
+
+```{r}
+data |>
+  mutate(
+    AGE_GROUP = case_when(
+      AGE <= 27 ~ "Young (<=27)",
+      AGE > 27 & AGE <= 39 ~ "Middle (28-39)",
+      AGE > 39 & AGE <= 66 ~ "Middle (40-66)",
+      AGE > 66 ~ "Old (>=66)"
+    ),
+    GENDER_binary = case_when(
+      GENDER == "Male" ~ "Male",
+      GENDER == "Female" ~ "Female",
+      TRUE ~ "Female"
+    )
+  ) |>
+  count(AGE_GROUP, GENDER_binary)
+```
+
+
+```{r}
+#| label: fig-local-pref-corr
+#| fig-cap: "Correlation matrix of the ten local preference items."
+data |>
+  select(paste0("ALCL", 1:10)) |>
+  correlate() |>
+  shave() |>
+  rplot(print_cor = TRUE)
+```
+
+
+```{r}
+#| label: fig-local-pref-corr-socdem
+#| fig-cap: "Correlation matrix of the ten local preference items for respondents who voted for A. Socialdemokratiet in the local election."
+data |>
+  filter(VOTE_LOC_PRTY == "A. Socialdemokratiet") |>
+  select(paste0("ALCL", 1:10)) |>
+  correlate() |>
+  shave() |>
+  rplot(print_cor = TRUE)
+```
+
+```{r}
+#| label: fig-local-pref-corr-sf
+#| fig-cap: "Correlation matrix of the ten local preference items for respondents who voted for F. SF - Socialistisk Folkeparti in the local election."
+data |>
+  filter(VOTE_LOC_PRTY == "F. SF - Socialistisk Folkeparti") |>
+  select(paste0("ALCL", 1:10)) |>
+  correlate() |>
+  shave() |>
+  rplot(print_cor = TRUE)
+```
+
+```{r}
+#| label: fig-local-pref-corr-enhedslisten
+#| fig-cap: "Correlation matrix of the ten local preference items for respondents who voted for Ø. Enhedslisten – De Rød-Grønne in the local election."
+data |>
+  filter(VOTE_LOC_PRTY == "Ø. Enhedslisten – De Rød-Grønne") |>
+  select(paste0("ALCL", 1:10)) |>
+  correlate() |>
+  shave() |>
+  rplot(print_cor = TRUE)
+```
+
+```{r}
+#| label: fig-local-pref-corr-radikale
+#| fig-cap: "Correlation matrix of the ten local preference items for respondents who voted for B. Radikale Venstre in the local election."
+data |>
+  filter(VOTE_LOC_PRTY == "B. Radikale Venstre") |>
+  select(paste0("ALCL", 1:10)) |>
+  correlate() |>
+  shave() |>
+  rplot(print_cor = TRUE)
+```
+
+```{r}
+#| label: fig-local-pref-corr-konservative
+#| fig-cap: "Correlation matrix of the ten local preference items for respondents who voted for C. Det Konservative Folkeparti in the local election."
+data |>
+  filter(VOTE_LOC_PRTY == "C. Det Konservative Folkeparti") |>
+  select(paste0("ALCL", 1:10)) |>
+  correlate() |>
+  shave() |>
+  rplot(print_cor = TRUE)
+```
+
+
+
+```{r}
+#| label: fig-local-pref-corr-young
+#| fig-cap: "Correlation matrix of the ten local preference items for respondents younger than 30 years."
+data |>
+  filter(AGE < 30) |>
+  select(paste0("ALCL", 1:10)) |>
+  correlate() |>
+  shave() |>
+  rplot(print_cor = TRUE)
+```
+
+```{r}
+#| label: fig-local-pref-corr-old
+#| fig-cap: "Correlation matrix of the ten local preference items for respondents older than 55 years."
+data |>
+  filter(AGE > 55) |>
+  select(paste0("ALCL", 1:10)) |>
+  correlate() |>
+  shave() |>
+  rplot(print_cor = TRUE)
+```
+
+
+```{r}
+#| label: fig-local-pref-corr-male
+#| fig-cap: "Correlation matrix of the ten local preference items for male respondents."
+data |>
+  filter(GENDER == "Male") |>
+  select(paste0("ALCL", 1:10)) |>
+  correlate() |>
+  shave() |>
+  rplot(print_cor = TRUE)
+```
+
+```{r}
+#| label: fig-local-pref-corr-female
+#| fig-cap: "Correlation matrix of the ten local preference items for female respondents."
+data |>
+  filter(GENDER == "Female") |>
+  select(paste0("ALCL", 1:10)) |>
+  correlate() |>
+  shave() |>
+  rplot(print_cor = TRUE)
+```
+
+
+
+
+# Voting
+
+```{r}
+#| label: fig-vote-national-party
+#| fig-cap: "Vote for National Party"
+data |>
+  ggplot(aes(
+    y = VOTE_NAT_PRTY |> fct_infreq() |> fct_rev(),
+    fill = VOTE_NAT_PRTY
+  )) +
+  geom_bar(aes(x = after_stat(count / sum(count))), stat = "count") +
+  labs(x = "Fraction of respondents", y = "Vote for National Party") +
+  scale_x_continuous(labels = percent_format(accuracy = 1)) +
+  guides(fill = "none") +
+  theme_minimal()
+```
+
+```{r}
+#| label: fig-vote-local-party
+#| fig-cap: "Vote for Local Party"
+data |>
+  ggplot(aes(
+    y = VOTE_LOC_PRTY |> fct_infreq() |> fct_rev(),
+    fill = VOTE_LOC_PRTY
+  )) +
+  geom_bar(aes(x = after_stat(count / sum(count))), stat = "count") +
+  labs(x = "Fraction of respondents", y = "Vote for National Party") +
+  scale_x_continuous(labels = percent_format(accuracy = 1)) +
+  guides(fill = "none") +
+  theme_minimal()
+```
+
 
 # Voting System Satisfaction and Reform
 
-In Danish national elections, each voter casts one vote for a party or candidate; and seats
+SSBS1: *In Danish national elections, each voter casts one vote for a party or candidate; and seats
 in Parliament are allocated using proportional representation. Overall, how satisfied are
-you with this voting system?
+you with this voting system?*
+
+SSBS2: *I am confident that I understand how my vote is translated into the final election outcome
+under the current system.*
+
+SQDR1: *In some electoral systems, voters can allocate more than one vote across candidates or
+parties, rather than casting only a single vote. To what extent would you support or oppose
+introducing such a system?*
 
 ```{r}
-data |>
+#| label: fig-voting-satisfaction-reform
+#| fig-cap: "Voting system satisfaction, certainty, and reform support."
+#| fig-height: 3
+vs1 <- data |>
   ggplot(aes(x = SSBS1)) +
   geom_bar(aes(y = after_stat(count / sum(count))), stat = "count") +
   scale_y_continuous(labels = percent_format(accuracy = 1)) +
-  scale_x_continuous(breaks = 0:10)
-```
-
-
-I am confident that I understand how my vote is translated into the final election outcome
-under the current system.
-
-```{r}
-data |>
+  scale_x_continuous(breaks = 0:10) +
+  labs(y = "") +
+  theme_minimal()
+vs2 <- data |>
   ggplot(aes(x = SSBS2)) +
   geom_bar(aes(y = after_stat(count / sum(count))), stat = "count") +
   scale_y_continuous(labels = percent_format(accuracy = 1)) +
-  scale_x_continuous(breaks = 0:10)
-```
-
-
-
-In some electoral systems, voters can allocate more than one vote across candidates or
-parties, rather than casting only a single vote. To what extent would you support or oppose
-introducing such a system?
-
-```{r}
-data |>
+  scale_x_continuous(breaks = 0:10) +
+  labs(y = "") +
+  theme_minimal()
+vs3 <- data |>
   ggplot(aes(x = SQDR1)) +
   geom_bar(aes(y = after_stat(count / sum(count))), stat = "count") +
   scale_y_continuous(labels = percent_format(accuracy = 1)) +
-  scale_x_continuous(breaks = 0:10)
+  scale_x_continuous(breaks = 0:10) +
+  labs(y = "") +
+  theme_minimal()
+
+vs1 + vs2 + vs3 + plot_layout(nrow = 1)
 ```
 
+SRQV1: *Suppose everyone had 10 votes to allocate. In your opinion, how should voters be allowed
+to distribute them?*
 
 ```{r}
+#| label: fig-voting-distribution
+#| fig-cap: "Preferred distribution of votes in a multi-vote electoral system."
+#| fig-height: 3
 data |>
-  ggplot(aes(y = SRQV1)) +
+  ggplot(aes(y = SRQV1 |> fct_infreq() |> fct_rev())) +
   geom_bar(aes(x = after_stat(count / sum(count))), stat = "count") +
-  scale_y_discrete(labels = function(x) stringr::str_wrap(x, width = 20)) +
-  scale_x_continuous(labels = percent_format(accuracy = 1))
+  scale_y_discrete(labels = function(x) stringr::str_wrap(x, width = 60)) +
+  scale_x_continuous(labels = percent_format(accuracy = 1)) +
+  labs(x = "Fraction of respondents", y = "") +
+  theme_minimal() 
 ```
+
+```{r}
+#| label: fig-satisfaction-certainty-reform
+#| fig-cap: "Satisfaction vs. Certainty vs. Reform Support"
+#| fig-height: 3
+sc1 <- data |>
+  ggplot(aes(x = SSBS1, y = SSBS2)) +
+  geom_jitter(alpha = 0.5, width = 0.3, height = 0.3) +
+  geom_smooth(method = "lm", formula = 'y ~ x') +
+  labs(
+    x = "Satisfaction",
+    y = "Understanding"
+  ) +
+  theme_minimal()
+
+sc2 <- data |>
+  ggplot(aes(x = SSBS1, y = SQDR1)) +
+  geom_jitter(alpha = 0.5, width = 0.3, height = 0.3) +
+  geom_smooth(method = "lm", formula = 'y ~ x') +
+  labs(
+    x = "Satisfaction",
+    y = "Support for multi-vote"
+  ) +
+  theme_minimal()
+
+sc3 <- data |>
+  ggplot(aes(x = SQDR1, y = SSBS2)) +
+  geom_jitter(alpha = 0.5, width = 0.3, height = 0.3) +
+  geom_smooth(method = "lm", formula = 'y ~ x') +
+  labs(
+    y = "Understanding",
+    x = "Support for multi-vote"
+  ) +
+  theme_minimal()
+
+sc1 + sc2 + sc3 + plot_layout(nrow = 1)
+```
+
+
+
+
