@@ -220,12 +220,7 @@ window.Quarto = {
   <li><a href="#preference-formation-model" id="toc-preference-formation-model" class="nav-link" data-scroll-target="#preference-formation-model"><span class="header-section-number">6</span> Preference Formation Model</a>
   <ul class="collapse">
   <li><a href="#specification-of-the-initialization" id="toc-specification-of-the-initialization" class="nav-link" data-scroll-target="#specification-of-the-initialization"><span class="header-section-number">6.1</span> Specification of the initialization</a></li>
-  <li><a href="#specification-of-the-preference-formation-model-functions" id="toc-specification-of-the-preference-formation-model-functions" class="nav-link" data-scroll-target="#specification-of-the-preference-formation-model-functions"><span class="header-section-number">6.2</span> Specification of the preference formation model functions</a>
-  <ul class="collapse">
-  <li><a href="#message-format" id="toc-message-format" class="nav-link" data-scroll-target="#message-format"><span class="header-section-number">6.2.1</span> Message format</a></li>
-  <li><a href="#broadcast-functions" id="toc-broadcast-functions" class="nav-link" data-scroll-target="#broadcast-functions"><span class="header-section-number">6.2.2</span> Broadcast functions</a></li>
-  <li><a href="#perception-and-update-functions" id="toc-perception-and-update-functions" class="nav-link" data-scroll-target="#perception-and-update-functions"><span class="header-section-number">6.2.3</span> Perception and update functions</a></li>
-  </ul></li>
+  <li><a href="#specification-of-the-preference-formation-model-functions" id="toc-specification-of-the-preference-formation-model-functions" class="nav-link" data-scroll-target="#specification-of-the-preference-formation-model-functions"><span class="header-section-number">6.2</span> Specification of the preference formation model functions</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -252,17 +247,17 @@ window.Quarto = {
 </header>
 
 
-<section id="goal" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Goal</h1>
+<section id="goal" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="goal"><span class="header-section-number">1</span> Goal</h2>
 <p>We build a stack of models that simulate the process of preference formation and an election in the electorate of the population of <strong>Aarhus</strong>. Once for the municipal election and once for the national election.</p>
 <p>First, we will focus on the <strong>municipal election</strong>.</p>
 </section>
-<section id="data-driven-agent-based-modeling" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Data-driven agent-based modeling</h1>
+<section id="data-driven-agent-based-modeling" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="data-driven-agent-based-modeling"><span class="header-section-number">2</span> Data-driven agent-based modeling</h2>
 <p>The modeling process is <strong>data-driven</strong> <span class="citation" data-cites="Lorenz2021DatadrivenAgentbasedModeling">(<a href="#ref-Lorenz2021DatadrivenAgentbasedModeling" role="doc-biblioref">Lorenz 2021</a>)</span>. That means, empirical data is used for <a href="./data-driven_ABM.html#exploratory-data-analysis">exploratory data analysis</a> and <a href="./data-driven_ABM.html#initialization">initialization</a>, <a href="./data-driven_ABM.html#calibration">calibration</a>, and <a href="./data-driven_ABM.html#validation">validation</a> of the model. Details about the data-driven modeling process can be found in the <a href="./data-driven_ABM.html">data-driven ABM part</a>.</p>
 </section>
-<section id="models" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Models</h1>
+<section id="models" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="models"><span class="header-section-number">3</span> Models</h2>
 <p>As specifiec in the proposal and the Specification Document D04.1, we have a stack of 6 models that are connected to each other as shown in the <a href="#fig-modelplan" class="quarto-xref">Figure&nbsp;1</a>. Here we specify this chain of models further with the goal to implent the first prototype. To that end, we also give an overview of the data sources used for initialization and validation.</p>
 <div id="fig-modelplan" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
@@ -288,8 +283,8 @@ Model 4: Election Setup (set up as the orignal voting system in Aarhus and then 
 Model 5: <strong>Voting</strong><br>
 Model 6: Election (aggregation of votes into results)</p>
 </section>
-<section id="data-sources" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Data Sources</h1>
+<section id="data-sources" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="data-sources"><span class="header-section-number">4</span> Data Sources</h2>
 <p>These are the data sources we use for initialization and validation of the models. Additionally, some data sources are also used as input data in model simulation.</p>
 <ul>
 <li><strong>Aarhus Census</strong>: Census data for the population of Aarhus</li>
@@ -299,8 +294,8 @@ Model 6: Election (aggregation of votes into results)</p>
 <li><strong>Aarhus Election Results</strong>: Results from the last municipal election in Aarhus. Results from the last national election in Aarhus.</li>
 </ul>
 </section>
-<section id="model-overview" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Model Overview</h1>
+<section id="model-overview" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="model-overview"><span class="header-section-number">5</span> Model Overview</h2>
 <p><a href="#fig-model-overview" class="quarto-xref">Figure&nbsp;2</a> gives the full outline the models and their connections to each other and to the data sources. The full model flow is shown in the bottom part (Greenish), the data sources in the top part (blue), and the algorithms for initialization (purple) and validation (magenta) in the middle part. The arrows show the flow of data and information between the different components.</p>
 <p>Nodes with the <em>note-shape</em> (with the dog-ear on the topright) represent <strong>raw empirical data sources</strong>. Nodes with the <em>box-shape</em> represent <strong>algorithms</strong> for initialization, validation, or simulation procedures, while <em>double-lined boxes</em> represent <strong>substantial (multistep) algorithms</strong> and single-line procedures represent mainly one <strong>function</strong> determining the validation or election outcome computation. Nodes with the <em>cylinder-shape</em> represent simulated data which by initialization or model procedures. The validation nodes are rounded boxes. This represents that validation can be function determining the quality of the match between emprical and simulated data but may also be in part qualitatively done in the first place.</p>
 <div class="cell" data-fig-height="3" data-layout-align="default">
@@ -721,12 +716,12 @@ Figure&nbsp;2: Model Overview
 </div>
 </div>
 </div>
-<section id="voting-system" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="voting-system"><span class="header-section-number">5.1</span> Voting System</h2>
+<section id="voting-system" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="voting-system"><span class="header-section-number">5.1</span> Voting System</h3>
 <p>Besides the <strong>five emprical data sources</strong>, the <span class="boxed-data"><strong>Voting System</strong></span> is another source of empirical input. We implement the original Danish proportional voting system with open list composed by parties where each voter has one vote to either give to one candidate from a party list or just to one party list without specifying a candidate. Later the voting system shall be exchanged with other for counterfactual scenario simulations. The voting system has implications. The voting system determines the election setup (Model 4) based on the lists of candidates and, therefore, has implications on how the ballot looks and what voters have to decide about when they want to fill it out (Model 5). Subsequently it determines how the election results are computed from the ballots (Model 6).</p>
 </section>
-<section id="initialization-procedures" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="initialization-procedures"><span class="header-section-number">5.2</span> Initialization procedures</h2>
+<section id="initialization-procedures" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="initialization-procedures"><span class="header-section-number">5.2</span> Initialization procedures</h3>
 <p>We have two initialization procedures. Both create a set of agents serving as a synthetic population representing the electorate of the city of Aarhus. Therefore, they both take the census data as input, such that they can create agents in the same magnitude and with demographic characteristics such that represent the real population. The procedures also take the survey data as input. This data is used to initialize agents also with relevant beliefs and preferences as the core dynamic agent variables and also with static internal variables of agents determining their behavior (to be explained later).</p>
 <p><span class="boxed-init"><strong>Initialization 1</strong></span> is for initialization of the <span class="boxed-model1">Agents for Preference Formation</span>. The preference formation model will transform these preferences through individual preference updates. The goal is that the <span class="boxed-model1">Agents for Voting</span> have preference distributions and relations simular to the real world as captured in the survey data. The core <em>dynamic variables</em> model are therefore the preferences. That means the variables <code>ALCL1</code>, …, <code>ALCL10</code>. When the distributions and relations of these variables shall emerge through preference formation, the initial values of these variables should not be set based on the survey data but rather be initialized randomly around neutrality.</p>
 <p>This implies the following guidelines for <span class="boxed-init"><strong>Initialization 1</strong></span>:</p>
@@ -750,22 +745,22 @@ Figure&nbsp;2: Model Overview
 <p><span class="boxed-init"><strong>Initialization 2</strong></span> is for initialization of the <span class="boxed-model2">Agents for Voting</span>. The voting model will transform these preferences and produces <span class="boxed-model2">Agents with ballots</span>. The goal is that the votes of the agents are similar to the real votes as captured in the survey data. The intialization procedure thus follows the main idea of a synthetic population with the same charaterstics as the real population. The simplest version would be by resampling from repsondents of the survey data. More sophisticated versions should be able to increase the diversity of agents in a realistic way.</p>
 <p>Note: The Aarhus survey fulfills <em>different roles</em> in the Preference Formation and the Voting model. In the first, it is used mostly for validation of the outcome of preference formation and only a few aspects are used for agent initialization. In the second, the survey data is mainly used for intitialization while the empirical validation in the end is on the election results. That is the reason for <span class="boxed-model1">Agents for Voting</span> and <span class="boxed-model2">Agents for Voting</span> appearing two times in the simulation pipeline. This reflects that the pipeline is divided into the independent models of preference formation and the voting. At later stage, they can be combined into a single model.</p>
 </section>
-<section id="validation-functions" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="validation-functions"><span class="header-section-number">5.3</span> Validation functions</h2>
+<section id="validation-functions" class="level3" data-number="5.3">
+<h3 data-number="5.3" class="anchored" data-anchor-id="validation-functions"><span class="header-section-number">5.3</span> Validation functions</h3>
 <p>We have three validation functions. The first one is for validating the outcome of the preference formation model. The second one is for validating the votes of agents in the voting model, and the third one is for validating the election results.</p>
 <p><span class="boxed-valid"><strong>Validation 1</strong></span> The goal is that the distribution of simulated preferences and their relations are similar to the survey data. Therefore, we can use distributional similarity metrics and correlation similarity metrics as validation functions.</p>
 <p><span class="boxed-valid"><strong>Validation 2</strong></span> is for validating the votes of agents in the voting model. The goal is that individual voting decisions based on the preferences are similar to the actual voting decisions as reported by respondents in the survey. Therefore, we can use classification metrics as validation functions.</p>
 <p><span class="boxed-valid"><strong>Validation 3</strong></span> is for validating the election results. The goal is that the aggregated simulated election results are similar to the real election results. Therefore, we can use distance metrics between distributions as validation functions. The difference to <em>Validation 2</em> is that we are not validating the individual votes but the aggregated election results.</p>
 </section>
-<section id="simulation-procedures" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="simulation-procedures"><span class="header-section-number">5.4</span> Simulation procedures</h2>
+<section id="simulation-procedures" class="level3" data-number="5.4">
+<h3 data-number="5.4" class="anchored" data-anchor-id="simulation-procedures"><span class="header-section-number">5.4</span> Simulation procedures</h3>
 <p>The <span class="boxed-model1"><strong>Preference Formation</strong></span> model is a dynamic multi-timestep model where agents update their preferences based on their interaction but also with external input from news and candidates. Details are described</p>
 <p>The <span class="boxed-model2"><strong>Voting</strong></span> model is a one-shot model that takes the preferences of agents and the candidate and party profiles as input and produces a ballot (or an abstention) for each agent. In the default voting system the ballot is essentially a choice of one candidate or one party. In alternative voting systems, the ballot can be more complex.</p>
 <p>The <span class="boxed-model2"><strong>Election</strong></span> is the simple aggregation of all ballots to the typical voting outcome: Counts of votes for all parties and candidates and the vote shares of parties.</p>
 </section>
 </section>
-<section id="preference-formation-model" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Preference Formation Model</h1>
+<section id="preference-formation-model" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="preference-formation-model"><span class="header-section-number">6</span> Preference Formation Model</h2>
 <p><a href="#fig-preference-formation-overview" class="quarto-xref">Figure&nbsp;3</a> gives an overview of the preference formation model including the necessary initialization steps. The model is a dynamic multi-timestep model where agents update their preferences based on their interaction but also with external input from news and candidates.</p>
 <div class="cell" data-fig-height="5" data-layout-align="default">
 <details class="code-fold">
@@ -844,8 +839,8 @@ Figure&nbsp;3: Preference Formation Sequence Diagram
 </div>
 </div>
 <p>Note: Agents (peers) stands prototypical for the other agents in the population.</p>
-<section id="specification-of-the-initialization" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="specification-of-the-initialization"><span class="header-section-number">6.1</span> Specification of the initialization</h2>
+<section id="specification-of-the-initialization" class="level3" data-number="6.1">
+<h3 data-number="6.1" class="anchored" data-anchor-id="specification-of-the-initialization"><span class="header-section-number">6.1</span> Specification of the initialization</h3>
 <p>In the most basic version, the initialization of agents must include:</p>
 <ul>
 <li>Dynamic variables: The preferences <code>ALCL1</code>, …, <code>ALCL10</code> initialized as zero.</li>
@@ -853,23 +848,23 @@ Figure&nbsp;3: Preference Formation Sequence Diagram
 </ul>
 <p>The preference variables in the survey all have values in <span class="math inline">\(\{-2,-1,0,1,2\}\)</span>, where -2 and 2 represent the strongest negative and positive preferences, respectively. In the simulation model, we use continuous values in the same range <span class="math inline">\([-2, 2]\)</span>. The latter allows for more fine-grained updates.</p>
 </section>
-<section id="specification-of-the-preference-formation-model-functions" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="specification-of-the-preference-formation-model-functions"><span class="header-section-number">6.2</span> Specification of the preference formation model functions</h2>
+<section id="specification-of-the-preference-formation-model-functions" class="level3" data-number="6.2">
+<h3 data-number="6.2" class="anchored" data-anchor-id="specification-of-the-preference-formation-model-functions"><span class="header-section-number">6.2</span> Specification of the preference formation model functions</h3>
 <p>The simulation loops over several time steps. In each time step, agents broadcast their preferences and perceive the news and the preferences of their peers. Based on this input, they update their preferences.</p>
-<section id="message-format" class="level3" data-number="6.2.1">
-<h3 data-number="6.2.1" class="anchored" data-anchor-id="message-format"><span class="header-section-number">6.2.1</span> Message format</h3>
+<section id="message-format" class="level4" data-number="6.2.1">
+<h4 data-number="6.2.1" class="anchored" data-anchor-id="message-format"><span class="header-section-number">6.2.1</span> Message format</h4>
 <p>A <code>message</code> is a <em>key-value pair</em> where the key is one of the ten preference topics <code>ALCL1</code>, …, <code>ALCL10</code> and the value is a number in the range <span class="math inline">\([-2, 2]\)</span>.<br>
 Examples: <code>{ALCL1: +2}</code>, <code>{ALCL4: -1}</code>, <code>{ALCL10: +0.43}</code>, <code>{ALCL5: -1.37}</code>.</p>
 <p><code>messages</code> is a list of <code>message</code> objects.</p>
 <p><strong>Notes:</strong> <em>Polis</em> can broadcast <code>messages</code> (like the daily news) which maybe perceived by agents. Each <em>agent</em> broadcasts only one <code>message</code> per time step. Upon perceiving, <em>agents</em> may perceive messages from <em>Polis</em> and <em>Peer-Agents</em>. So, <em>agent</em> collects a list of <code>messages</code>. Then it works through them one by one via the <code>updatePreferences</code> function.</p>
 </section>
-<section id="broadcast-functions" class="level3" data-number="6.2.2">
-<h3 data-number="6.2.2" class="anchored" data-anchor-id="broadcast-functions"><span class="header-section-number">6.2.2</span> Broadcast functions</h3>
+<section id="broadcast-functions" class="level4" data-number="6.2.2">
+<h4 data-number="6.2.2" class="anchored" data-anchor-id="broadcast-functions"><span class="header-section-number">6.2.2</span> Broadcast functions</h4>
 <p><em>Polis:</em> In the simplest version (where we do not have a news dataset), <code>broadcast(messages)</code> selects a random ALCL-domains and a random values. In the simple version, <code>messages</code> can just be a single <code>message</code> object.</p>
 <p><em>Agent:</em> The simple version of <code>broadcast(message)</code> is that the agent picks a random key and takes its current the writes out its current preferences. (Option: If agents also maintain three important domains as they also specify in the survey, they can select those domains more likely.)</p>
 </section>
-<section id="perception-and-update-functions" class="level3" data-number="6.2.3">
-<h3 data-number="6.2.3" class="anchored" data-anchor-id="perception-and-update-functions"><span class="header-section-number">6.2.3</span> Perception and update functions</h3>
+<section id="perception-and-update-functions" class="level4" data-number="6.2.3">
+<h4 data-number="6.2.3" class="anchored" data-anchor-id="perception-and-update-functions"><span class="header-section-number">6.2.3</span> Perception and update functions</h4>
 <p>In the <em>perception and update phase</em>, the <code>perceive</code> function reads the broadcasted messaged from the <em>Polis</em> and <em>Peer-Agents</em>, compiles a <code>messages</code> list and works through it one by one by applying <code>updatePreferences</code>.</p>
 <p>Given a perceived message and the own preference profile (which is technically identical to a list of one message per each ALCL domain) <code>updatePreferences</code> updates the own preference of the same key or not by the procedure as specified by <span class="citation" data-cites="BatzkeEtAl2025CognitiveCoherencePolitical">Batzke et al. (<a href="#ref-BatzkeEtAl2025CognitiveCoherencePolitical" role="doc-biblioref">2025</a>)</span>. Central for this is a <strong>mental model</strong> specifying the correlation between different preferences which the agent considers relevant. (To be derive from data next.)</p>
 <p>Basic principles of <code>updatePreferences</code>:</p>
