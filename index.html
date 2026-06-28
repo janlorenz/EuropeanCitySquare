@@ -849,7 +849,7 @@ Figure&nbsp;3: Preference Formation Sequence Diagram
 <p>In the most basic version, the initialization of agents must include:</p>
 <ul>
 <li>Dynamic variables: The preferences <code>ALCL1</code>, …, <code>ALCL10</code> initialized as zero.</li>
-<li>Static internal variables: A mental model for the preferences as a correlation matrix taken from data and demographics.</li>
+<li>Static internal variables: A <em>mental model</em> for the preferences as a correlation matrix taken from data and demographics. Some initial empirical correlation matrices can be found in the <a href="survey-results.qmd#correlation">Survey Results</a> section.</li>
 </ul>
 <p>The preference variables in the survey all have values in <span class="math inline">\(\{-2,-1,0,1,2\}\)</span>, where -2 and 2 represent the strongest negative and positive preferences, respectively. In the simulation model, we use continuous values in the same range <span class="math inline">\([-2, 2]\)</span>. The latter allows for more fine-grained updates.</p>
 </section>
@@ -878,7 +878,7 @@ Examples: <code>{ALCL1: +2}</code>, <code>{ALCL4: -1}</code>, <code>{ALCL10: +0.
 <li>For the sake of this formalization we can assume the preference profile of agent <span class="math inline">\(k\)</span> being a 10 dimensional vector <span class="math inline">\(x^{(j)}\)</span> with <span class="math inline">\(x^{(j)}_i\)</span> representing its current preference value for ALCL<span class="math inline">\(i\)</span>.</li>
 <li>Each agents maintains a mental model to evaluate the coherence of a preference profile. Coherence is one number. The higher the number the more coherent is the profile.</li>
 <li>The mental model is a correlation matrix <span class="math inline">\(C^{(j)}\)</span> with <span class="math inline">\(C^{(j)}_{ij}\)</span> representing the correlation between ALCL<span class="math inline">\(i\)</span> and ALCL<span class="math inline">\(j\)</span>. The matrix is symmetric and the diagonal is zero (in constrast to the standard correlation matrix). So essentially only <span class="math inline">\((n^2 - n)/2\)</span> elements need to be stored. For ten domains this is 45 elements. The diagonal is zero because the correlation of a domain with itself is not relevant for the coherence evaluation between domains.</li>
-<li>The coherence function for a preference profile <span class="math inline">\(x\)</span> (omitting the agent index <span class="math inline">\(j\)</span>)is defined as <span class="math inline">\(c^{(j)}(x) = x^TC^{(j)}x\)</span> (with <span class="math inline">\(x^T\)</span> being the transpose of <span class="math inline">\(x\)</span>).</li>
+<li>The coherence function for a preference profile <span class="math inline">\(x\)</span> (omitting the agent index <span class="math inline">\(j\)</span>) is defined as <span class="math inline">\(c^{(j)}(x) = x^TC^{(j)}x\)</span> (with <span class="math inline">\(x^T\)</span> being the transpose of <span class="math inline">\(x\)</span>).</li>
 <li>Agents change their preference profiles based on external input of a <code>message</code>.</li>
 </ul>
 <p>Agent <span class="math inline">\(j\)</span> executes <code>updatePreferences(message)</code> as follows for a <code>message</code> that has key <code>ALCL</code><span class="math inline">\(i\)</span> and value <span class="math inline">\(v\)</span>:</p>
