@@ -4,7 +4,7 @@
     "href": "survey.html",
     "title": "Survey Results",
     "section": "",
-    "text": "The survey was conducted in the population of Aarhus, Denmark, and includes questions about beliefs, belief certainties, and preferences on five national topics: security, economics, welfare, immigration, and climate change. On Aarhus local topics, it has the ten most relevant questions from the Voting Advice Application (Kandidattest) for the municipal election.\nCode\nlibrary(tidyverse)\nlibrary(ggstats)\nlibrary(ggExtra)\nlibrary(corrr)\nlibrary(scales)\nlibrary(gt)\nlibrary(patchwork)\nlibrary(glue)\ndata &lt;- read_csv(\"survey_responses_ENG_TRANS.csv\")\ncand &lt;- read_csv(\"data/aarhus_candidates_local_2025.csv\")\n# cross-walk Qx - ALCLx\ncrosswalk &lt;- tribble(\n  ~Q    , ~ALCL    ,\n  \"Q6\"  , \"ALCL1\"  ,\n  \"Q5\"  , \"ALCL2\"  ,\n  \"Q1\"  , \"ALCL3\"  ,\n  \"Q8\"  , \"ALCL4\"  ,\n  \"Q17\" , \"ALCL5\"  ,\n  \"Q21\" , \"ALCL6\"  ,\n  \"Q22\" , \"ALCL7\"  ,\n  \"Q23\" , \"ALCL8\"  ,\n  \"Q24\" , \"ALCL9\"  ,\n  \"Q25\" , \"ALCL10\"\n)"
+    "text": "Work in progress\nThe survey was conducted in the population of Aarhus, Denmark, and includes questions about beliefs, belief certainties, and preferences on five national topics: security, economics, welfare, immigration, and climate change. On Aarhus local topics, it has the ten most relevant questions from the Voting Advice Application (Kandidattest) for the municipal election.\nCode\nlibrary(tidyverse)\nlibrary(ggstats)\nlibrary(ggExtra)\nlibrary(corrr)\nlibrary(scales)\nlibrary(gt)\nlibrary(patchwork)\nlibrary(glue)\n# data &lt;- read_csv(\"survey_responses_ENG_TRANS.csv\")\ndata &lt;- read_csv(\"OneDrive/Aarhus Survey Data/survey_responses_ENG_TRANS.csv\")\ncand &lt;- read_csv(\"OneDrive/Aarhus Survey Data/aarhus_candidates_local_2025.csv\")\n# cross-walk Qx - ALCLx\ncrosswalk &lt;- tribble(\n  ~Q    , ~ALCL    ,\n  \"Q6\"  , \"ALCL1\"  ,\n  \"Q5\"  , \"ALCL2\"  ,\n  \"Q1\"  , \"ALCL3\"  ,\n  \"Q8\"  , \"ALCL4\"  ,\n  \"Q17\" , \"ALCL5\"  ,\n  \"Q21\" , \"ALCL6\"  ,\n  \"Q22\" , \"ALCL7\"  ,\n  \"Q23\" , \"ALCL8\"  ,\n  \"Q24\" , \"ALCL9\"  ,\n  \"Q25\" , \"ALCL10\"\n)"
   },
   {
     "objectID": "survey.html#national-topics",
@@ -74,14 +74,14 @@
     "href": "index.html",
     "title": "Model Outline",
     "section": "",
-    "text": "We build a stack of models that simulate the process of preference formation and an election in the electorate of the population of Aarhus. Once for the municipal election and once for the national election.\nFirst, we will focus on the municipal election."
+    "text": "Work in progress"
   },
   {
     "objectID": "index.html#goal",
     "href": "index.html#goal",
     "title": "Model Outline",
-    "section": "",
-    "text": "We build a stack of models that simulate the process of preference formation and an election in the electorate of the population of Aarhus. Once for the municipal election and once for the national election.\nFirst, we will focus on the municipal election."
+    "section": "1 Goal",
+    "text": "1 Goal\nWe build a stack of models that simulate the process of preference formation and an election in the electorate of the population of Aarhus. Once for the municipal election and once for the national election.\nFirst, we will focus on the municipal election."
   },
   {
     "objectID": "index.html#data-driven-agent-based-modeling",
